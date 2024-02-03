@@ -59,8 +59,8 @@ func PostUrl(w http.ResponseWriter, r *http.Request) {
 	item := UrlItem{id: token, longUrl: responseString}
 	urlData = append(urlData, item)
 
-	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "text/plain")
 	io.WriteString(w, "http://localhost:8080/"+token)
 
 }
