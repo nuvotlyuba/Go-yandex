@@ -4,6 +4,7 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
+	"strings"
 )
 
 type UrlItem struct {
@@ -43,7 +44,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostUrl(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Content-Type") != "text/plain" {
+	contentType := r.Header.Get("Content-Type")
+	if !strings.Contains(contentType, "text/plain") {
 		http.Error(w, "", http.StatusUnsupportedMediaType)
 		return
 	}
