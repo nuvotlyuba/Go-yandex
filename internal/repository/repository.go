@@ -1,4 +1,4 @@
-package storage
+package repository
 
 import "github.com/nuvotlyuba/Go-yandex/internal/utils"
 
@@ -9,11 +9,11 @@ type UrlItem struct {
 
 var UrlData []UrlItem
 
-func CreateNewShotUrl(responseString string) string {
-	token := utils.GenerateToken(8)
-	newUrl := UrlItem{Id: token, LongUrl: responseString}
+func CreateNewId(responseString string) string {
+	id := utils.GenerateToken(8)
+	newUrl := UrlItem{Id: id, LongUrl: responseString}
 	UrlData = append(UrlData, newUrl)
-	return "http://localhost:8080/" + token
+	return id
 }
 
 func GetItemById(id string) (item UrlItem, isFind bool) {
