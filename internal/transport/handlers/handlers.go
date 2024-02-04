@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -46,13 +45,12 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 func GetUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
-	fmt.Println(id, "id")
+
 	url, isFind := repository.GetItemById(id)
 	if !isFind {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
-	fmt.Println(url, "url")
 
 	w.Header().Set("Location", url.LongUrl)
 	w.WriteHeader(http.StatusTemporaryRedirect)
