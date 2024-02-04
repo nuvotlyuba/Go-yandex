@@ -53,7 +53,7 @@ func GetUrlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(url, "url")
-	// http.Redirect(w, r, url.LongUrl, http.StatusTemporaryRedirect)
+
 	w.Header().Set("Location", url.LongUrl)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }
