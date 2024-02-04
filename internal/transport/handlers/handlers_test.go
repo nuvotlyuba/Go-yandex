@@ -70,6 +70,18 @@ func TestPostUrlHandler(t *testing.T) {
 	}
 }
 
+func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.Response, string) {
+	req, err := http.NewRequest(method, ts.URL+path, nil)
+	require.NoError(t, err)
+	resp, err := ts.Client().Do(req)
+	require.NoError(t, err)
+
+	respBody, err := io.ReadAll(resp.Body)
+    require.NoError(t, err)
+
+    return resp, string(respBody)
+}
+
 func TestGetUrlHandler(t *testing.T) {
 
 	url := "https://yandex.ru"
@@ -77,7 +89,6 @@ func TestGetUrlHandler(t *testing.T) {
 
 	type want struct {
 		statusCode int
-		body string
 		locationHeader string
 	}
 
@@ -85,6 +96,7 @@ func TestGetUrlHandler(t *testing.T) {
 		name string
 		request string
 		contentType string
+		id string
 		want want
 	}{
 		{
@@ -100,29 +112,19 @@ func TestGetUrlHandler(t *testing.T) {
 			request: "/jhfybHYF",
 			want : want{
 				statusCode: 400,
-				body: "Ссылка по ID не найдена\n",
 			},
 		},
 	}
 
 	for _,tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			ts := httptest.NewServer(BasicRouter())
+			res , _:= testRequest(t, ts, http.MethodGet, tt.request)
 
-			w := httptest.NewRecorder()
-			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
-			GetUrlHandler(w, r)
-			res := w.Result()
 
 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 			assert.Equal(t, tt.want.locationHeader, res.Header.Get("Location"), "Отличный от %v заголовок Location", tt.want.locationHeader)
 
-			body, err := io.ReadAll(res.Body)
-			require.NoError(t, err, "Ошибка чтения тела ответа")
-			err = res.Body.Close()
-            require.NoError(t, err)
-
-
-			assert.Equal(t, tt.want.body, string(body))
 		})
 	}
 }

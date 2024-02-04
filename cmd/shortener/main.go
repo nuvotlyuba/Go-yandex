@@ -9,10 +9,9 @@ import (
 
 func main() {
 
-	mux := http.NewServeMux()
-	mux.HandleFunc(`/`, handlers.Handler)
 
-	err := http.ListenAndServe(`:8080`, mux)
+
+	err := http.ListenAndServe(`:8080`, handlers.BasicRouter())
 	if err != nil {
 		panic(err)
 	}

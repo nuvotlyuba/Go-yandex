@@ -1,27 +1,27 @@
 package handlers
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 )
 
+func BasicRouter() chi.Router {
+	r := chi.NewRouter()
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodPost:
-		PostUrlHandler(w, r)
-	case http.MethodGet:
-		GetUrlHandler(w, r)
-	default:
-		http.Error(w, "Неверный метод", http.StatusBadRequest)
-		return
-	}
+	r.Post("/", PostUrlHandler)
+	r.Get("/{id}", GetUrlHandler)
+
+	return r
 }
 
+
 func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
+
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
 		http.Error(w, "", http.StatusUnsupportedMediaType)
@@ -45,12 +45,15 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 func GetUrlHandler(w http.ResponseWriter, r *http.Request) {
 
-	id := r.URL.String()[1:]
+	id := chi.URLParam(r, "id")
+	fmt.Println(id, "id")
 	url, isFind := repository.GetItemById(id)
 	if !isFind {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
+	fmt.Println(url, "url")
+	// http.Redirect(w, r, url.LongUrl, http.StatusTemporaryRedirect)
 	w.Header().Set("Location", url.LongUrl)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }
