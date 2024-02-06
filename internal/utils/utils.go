@@ -17,8 +17,8 @@ func GenerateToken(length int) string {
 }
 
 func StringUrl(baseUrl, id string) string {
-	if baseUrl != "" {
-		return "http://"+ baseUrl + "/" + id
+	if baseUrl == "" {
+		return  config.GetDefaultBaseUrl() + "/" + id
 	}
-	return "http://" + config.GetDefaultBaseUrl() + "/" + id
+	return baseUrl + "/" + id
 }

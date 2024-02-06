@@ -38,5 +38,5 @@ func (a *NetAddress) Set(s string) error {
 }
 
 func GetDefaultBaseUrl() string {
-	return Host + ":" + strconv.Itoa(Port)
+	return  "http://" + Host + ":" + strconv.Itoa(Port)
 }
