@@ -7,20 +7,15 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nuvotlyuba/Go-yandex/config"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-var (
-	urlAddr = new(config.UrlAddress)
-)
+var baseUrl string
 
 
 func init() {
-	_= flag.Value(urlAddr)
-	flag.Var(urlAddr, "b", "Url address host:port")
-
+	flag.StringVar(&baseUrl, "b", "", "Url address host:port")
 }
 
 
@@ -36,7 +31,6 @@ func BasicRouter() chi.Router {
 
 func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 	flag.Parse()
-
 
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
@@ -55,7 +49,7 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, utils.StringUrl(urlAddr.Port, urlAddr.Host, id))
+	io.WriteString(w, utils.StringUrl(baseUrl, id))
 
 }
 
