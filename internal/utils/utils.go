@@ -1,6 +1,9 @@
 package utils
 
-import "math/rand"
+import (
+	"math/rand"
+	"strconv"
+)
 
 func GenerateToken(length int) string {
 	letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -9,4 +12,8 @@ func GenerateToken(length int) string {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
 	return string(b)
+}
+
+func StringUrl(port int, host, id string) string {
+	return "http://"+ host + ":" + strconv.Itoa(port) + "/" + id
 }
