@@ -5,3 +5,9 @@ t:
 
 test:
 	go test ./...
+
+test-clean:
+	go clean -testcache
+
+client:
+	go run ./cmd/client
