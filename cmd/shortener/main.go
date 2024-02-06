@@ -16,7 +16,7 @@ var (
 func init() {
 	_= flag.Value(netAddr)
 	_=flag.Value(urlAddr)
-	flag.Var(netAddr, "a", "Net address host:port")
+	flag.Var(netAddr, "b", "Net address host:port")
 }
 
 
