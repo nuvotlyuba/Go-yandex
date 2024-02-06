@@ -19,7 +19,7 @@ var (
 
 func init() {
 	_= flag.Value(urlAddr)
-	flag.Var(urlAddr, "a", "Url address host:port")
+	flag.Var(urlAddr, "b", "Url address host:port")
 
 }
 

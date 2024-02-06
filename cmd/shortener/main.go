@@ -11,18 +11,16 @@ import (
 
 var (
 	netAddr = new(config.NetAddress)
-	urlAddr = new(config.UrlAddress)
 )
 func init() {
-	_= flag.Value(netAddr)
-	_=flag.Value(urlAddr)
-	flag.Var(netAddr, "b", "Net address host:port")
+	flag.Var(netAddr, "a", "Net address host:port")
 }
 
 
 
 
 func main() {
+	_= flag.Value(netAddr)
 	flag.Parse()
 
 	config := apiserver.NewConfig()
