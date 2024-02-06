@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"flag"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -32,7 +31,6 @@ func BasicRouter() chi.Router {
 
 func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 	flag.Parse()
-	fmt.Println(baseUrl, "handler")
 
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
