@@ -3,7 +3,10 @@ package utils
 import (
 	"math/rand"
 	"strconv"
+
+	"github.com/nuvotlyuba/Go-yandex/config"
 )
+
 
 func GenerateToken(length int) string {
 	letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -15,5 +18,8 @@ func GenerateToken(length int) string {
 }
 
 func StringUrl(port int, host, id string) string {
-	return "http://"+ host + ":" + strconv.Itoa(port) + "/" + id
+	if host != "" && port != 0 {
+		return "http://"+ host + ":" + strconv.Itoa(port) + "/" + id
+	}
+	return "http://" + config.Host + ":" + strconv.Itoa(config.Port) + "/"+ id
 }

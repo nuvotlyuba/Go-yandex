@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+const (
+	Port = 8080
+	Host = "localhost"
+)
+
 type NetAddress struct {
 	Host string
 	Port int
@@ -29,5 +34,3 @@ func (a *NetAddress) Set(s string) error {
     a.Port = port
     return nil
 }
-
-

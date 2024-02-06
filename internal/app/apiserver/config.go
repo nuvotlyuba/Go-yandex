@@ -1,18 +1,18 @@
 package apiserver
 
-import "strconv"
+import (
+	"strconv"
 
-const (
-	Port = 8080
-	Host = "localhost"
+	"github.com/nuvotlyuba/Go-yandex/config"
 )
+
 type Config struct {
 	BindAddr string
 }
 
 func NewConfig() *Config {
 	return &Config {
-		BindAddr: Host + ":" + strconv.Itoa(Port),
+		BindAddr: config.Host + ":" + strconv.Itoa(config.Port),
 
 	}
 }

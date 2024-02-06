@@ -16,6 +16,7 @@ var (
 	urlAddr = new(config.UrlAddress)
 )
 
+
 func init() {
 	_= flag.Value(urlAddr)
 	flag.Var(urlAddr, "b", "Url address host:port")
