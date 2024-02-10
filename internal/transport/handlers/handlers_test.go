@@ -76,7 +76,7 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.
 	require.NoError(t, err)
 
 	respBody, err := io.ReadAll(resp.Body)
-	resp.Body.Close()
+	defer resp.Body.Close()
 
 	require.NoError(t, err)
 
@@ -121,7 +121,6 @@ func TestGetUrlHandler(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ts := httptest.NewServer(BasicRouter())
 			res, _ := testRequest(t, ts, http.MethodGet, tt.request)
-			defer res.Body.Close()
 
 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 			// assert.Equal(t, tt.want.locationHeader, res.Header.Get("Location"), "Отличный от %v заголовок Location", tt.want.locationHeader)
