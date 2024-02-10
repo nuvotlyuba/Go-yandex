@@ -84,7 +84,7 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.
 func TestGetUrlHandler(t *testing.T) {
 
 	url := "https://yandex.ru"
-	id := repository.CreateNewId(url)
+	id := repository.CreateNewID(url)
 
 	type want struct {
 		statusCode     int

@@ -5,12 +5,12 @@ import (
 )
 
 const (
-	BaseUrl       = "http://localhost:8080"
+	BaseURL       = "http://localhost:8080"
 	ServerAddress = "localhost:8080"
 )
 
 type Config struct {
-	BaseUrl      string `env:"BASE_URL" envDefault:"http://localhost:8080"`
+	BaseURL     string `env:"BASE_URL" envDefault:"http://localhost:8080"`
 	SeverAddress string `env:"SERVER_ADDRESS" envDefault:"localhost:8080"`
 }
 

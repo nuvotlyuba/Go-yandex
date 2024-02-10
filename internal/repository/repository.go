@@ -2,25 +2,25 @@ package repository
 
 import "github.com/nuvotlyuba/Go-yandex/internal/utils"
 
-type UrlItem struct {
-	Id      string
-	LongUrl string
+type URLItem struct {
+	ID      string
+	LongURL string
 }
 
-var UrlData []UrlItem
+var URLData []URLItem
 
-func CreateNewId(responseString string) string {
+func CreateNewID(responseString string) string {
 	id := utils.GenerateToken(8)
-	newUrl := UrlItem{Id: id, LongUrl: responseString}
-	UrlData = append(UrlData, newUrl)
+	newUrl := URLItem{ID: id, LongURL: responseString}
+	URLData = append(URLData, newUrl)
 	return id
 }
 
-func GetItemById(id string) (item UrlItem, isFind bool) {
-	for _, item := range UrlData {
-		if item.Id == id {
+func GetItemByID(id string) (item URLItem, isFind bool) {
+	for _, item := range URLData {
+		if item.ID == id {
 			return item, true
 		}
 	}
-	return UrlItem{}, false
+	return URLItem{}, false
 }

@@ -15,9 +15,9 @@ func GenerateToken(length int) string {
 	return string(b)
 }
 
-func StringUrl(baseUrl, id string) string {
-	if baseUrl == "" {
-		return config.GetEnv("BASE_URL", config.BaseUrl) + "/" + id
+func StringURL(baseURL, id string) string {
+	if baseURL == "" {
+		return config.GetEnv("BASE_URL", config.BaseURL) + "/" + id
 	}
-	return baseUrl + "/" + id
+	return baseURL + "/" + id
 }

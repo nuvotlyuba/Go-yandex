@@ -11,10 +11,10 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-var baseUrl string
+var baseURL string
 
 func init() {
-	flag.StringVar(&baseUrl, "b", "", "Base url for short links")
+	flag.StringVar(&baseURL, "b", "", "Base url for short links")
 }
 
 func BasicRouter() chi.Router {
@@ -40,12 +40,12 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responseString := string(responseData)
-	baseUrl = parseBaseUrl(baseUrl)
+	baseURL = parseBaseUrl(baseURL)
 
-	id := repository.CreateNewId(responseString)
+	id := repository.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, utils.StringUrl(baseUrl, id))
+	io.WriteString(w, utils.StringURL(baseURL, id))
 
 }
 
@@ -53,12 +53,12 @@ func GetUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 
-	url, isFind := repository.GetItemById(id)
+	url, isFind := repository.GetItemByID(id)
 	if !isFind {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
 
-	w.Header().Set("Location", url.LongUrl)
+	w.Header().Set("Location", url.LongURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

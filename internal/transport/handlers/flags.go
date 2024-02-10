@@ -23,17 +23,17 @@ import (
 // 	return config.ServerAddress
 
 // }
-func parseBaseUrl(flagBaseUrl string) string {
-	if flagBaseUrl != "" {
-		return flagBaseUrl
+func parseBaseUrl(flagBaseURL string) string {
+	if flagBaseURL != "" {
+		return flagBaseURL
 	}
 
-	envBaseUrl := os.Getenv("BASE_URL")
+	envBaseURL := os.Getenv("BASE_URL")
 
-	if flagBaseUrl == "" && envBaseUrl != "" {
-		return envBaseUrl
+	if flagBaseURL == "" && envBaseURL != "" {
+		return envBaseURL
 	}
 
-	return config.BaseUrl
+	return config.BaseURL
 
 }
