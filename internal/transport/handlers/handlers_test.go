@@ -115,7 +115,7 @@ func TestGetUrlHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ts := httptest.NewServer(BasicRouter())
-			res, _ := testRequest(t, ts, http.MethodGet, tt.request)
+			res := testRequest(t, ts, http.MethodGet, tt.request)
 
 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 			// assert.Equal(t, tt.want.locationHeader, res.Header.Get("Location"), "Отличный от %v заголовок Location", tt.want.locationHeader)
