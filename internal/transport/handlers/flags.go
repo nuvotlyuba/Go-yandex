@@ -34,6 +34,6 @@ func parseBaseUrl(flagBaseUrl string) string {
 		return envBaseUrl
 	}
 
-	return config.ServerAddress
+	return config.BaseUrl
 
 }
