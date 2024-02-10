@@ -53,7 +53,7 @@ func TestPostUrlHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
 			r.Header.Set("Content-Type", tt.contentType)
-			PostUrlHandler(w, r)
+			PostURLHandler(w, r)
 			res := w.Result()
 
 			assert.Equal(t, tt.want.contentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.want.contentType)
@@ -76,6 +76,8 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.
 	require.NoError(t, err)
 
 	respBody, err := io.ReadAll(resp.Body)
+	defer resp.Body.Close()
+
 	require.NoError(t, err)
 
 	return resp, string(respBody)

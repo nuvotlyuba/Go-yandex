@@ -23,7 +23,7 @@ import (
 // 	return config.ServerAddress
 
 // }
-func parseBaseUrl(flagBaseURL string) string {
+func parseBaseURL(flagBaseURL string) string {
 	if flagBaseURL != "" {
 		return flagBaseURL
 	}

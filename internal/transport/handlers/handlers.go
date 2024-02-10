@@ -20,13 +20,13 @@ func init() {
 func BasicRouter() chi.Router {
 	r := chi.NewRouter()
 
-	r.Post("/", PostUrlHandler)
-	r.Get("/{id}", GetUrlHandler)
+	r.Post("/", PostURLHandler)
+	r.Get("/{id}", GetURLHandler)
 
 	return r
 }
 
-func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
+func PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	flag.Parse()
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
@@ -40,7 +40,7 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responseString := string(responseData)
-	baseURL = parseBaseUrl(baseURL)
+	baseURL = parseBaseURL(baseURL)
 
 	id := repository.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
@@ -49,7 +49,7 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func GetUrlHandler(w http.ResponseWriter, r *http.Request) {
+func GetURLHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 

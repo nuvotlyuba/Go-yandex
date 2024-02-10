@@ -11,8 +11,8 @@ var URLData []URLItem
 
 func CreateNewID(responseString string) string {
 	id := utils.GenerateToken(8)
-	newUrl := URLItem{ID: id, LongURL: responseString}
-	URLData = append(URLData, newUrl)
+	newURL := URLItem{ID: id, LongURL: responseString}
+	URLData = append(URLData, newURL)
 	return id
 }
 
