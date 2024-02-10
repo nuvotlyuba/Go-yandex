@@ -69,18 +69,13 @@ func TestPostUrlHandler(t *testing.T) {
 	}
 }
 
-func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.Response, string) {
+func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.Response {
 	req, err := http.NewRequest(method, ts.URL+path, nil)
 	require.NoError(t, err)
 	resp, err := ts.Client().Do(req)
 	require.NoError(t, err)
 
-	respBody, err := io.ReadAll(resp.Body)
-	defer resp.Body.Close()
-
-	require.NoError(t, err)
-
-	return resp, string(respBody)
+	return resp
 }
 
 func TestGetUrlHandler(t *testing.T) {
