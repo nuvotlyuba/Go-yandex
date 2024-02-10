@@ -74,6 +74,7 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 	require.NoError(t, err)
 	resp, err := ts.Client().Do(req)
 	require.NoError(t, err)
+	resp.Body.Close()
 
 	return resp
 }
