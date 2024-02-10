@@ -1,42 +1,23 @@
 package config
 
 import (
-	"errors"
-	"strconv"
-	"strings"
+	"os"
 )
 
 const (
-	Port = 8080
-	Host = "localhost"
-
+	BaseUrl       = "http://localhost:8080"
+	ServerAddress = "localhost:8080"
 )
 
-type NetAddress struct {
-	Host string
-	Port int
+type Config struct {
+	BaseUrl      string `env:"BASE_URL" envDefault:"http://localhost:8080"`
+	SeverAddress string `env:"SERVER_ADDRESS" envDefault:"localhost:8080"`
 }
 
-type BaseUrl string
-
-func (a NetAddress) String() string {
-    return a.Host + ":" + strconv.Itoa(a.Port)
-}
-
-func (a *NetAddress) Set(s string) error {
-    hp := strings.Split(s, ":")
-    if len(hp) != 2 {
-        return errors.New("Need address in a form host:port")
-    }
-    port, err := strconv.Atoi(hp[1])
-    if err != nil{
-        return err
-    }
-    a.Host = hp[0]
-    a.Port = port
-    return nil
-}
-
-func GetDefaultBaseUrl() string {
-	return  "http://" + Host + ":" + strconv.Itoa(Port)
+func GetEnv(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return defaultValue
+	}
+	return value
 }

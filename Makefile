@@ -11,3 +11,9 @@ test-clean:
 
 client:
 	go run ./cmd/client
+
+start:
+	go run ./cmd/shortener
+
+fmt:
+	go fmt ./...

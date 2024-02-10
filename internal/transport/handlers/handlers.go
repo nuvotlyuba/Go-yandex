@@ -13,11 +13,9 @@ import (
 
 var baseUrl string
 
-
 func init() {
-	flag.StringVar(&baseUrl, "b", "", "Url address host:port")
+	flag.StringVar(&baseUrl, "b", "", "Base url for short links")
 }
-
 
 func BasicRouter() chi.Router {
 	r := chi.NewRouter()
@@ -28,10 +26,8 @@ func BasicRouter() chi.Router {
 	return r
 }
 
-
 func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 	flag.Parse()
-
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
 		http.Error(w, "", http.StatusUnsupportedMediaType)
@@ -44,9 +40,9 @@ func PostUrlHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responseString := string(responseData)
+	baseUrl = parseBaseUrl(baseUrl)
 
 	id := repository.CreateNewId(responseString)
-
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w, utils.StringUrl(baseUrl, id))

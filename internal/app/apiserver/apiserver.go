@@ -6,19 +6,18 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/transport/handlers"
 )
 
-
 type APIServer struct {
-	config *Config
+	config *APIConfig
 }
 
-func New(config *Config) *APIServer {
+func New(config *APIConfig) *APIServer {
 	return &APIServer{
 		config: config,
 	}
 }
 
-func( s *APIServer) Start() error {
-	addr := s.config.BindAddr
+func (s *APIServer) Start() error {
+	addr := s.config.ServerAddress
 
 	return http.ListenAndServe(addr, handlers.BasicRouter())
 }

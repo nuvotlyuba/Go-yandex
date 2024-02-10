@@ -12,44 +12,43 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-
 func TestPostUrlHandler(t *testing.T) {
 
 	type want struct {
 		contentType string
-		statusCode int
+		statusCode  int
 	}
 
 	tests := []struct {
-		name string
-		request string
-		url string
+		name        string
+		request     string
+		url         string
 		contentType string
-		want want
+		want        want
 	}{
 		{
-			name: "Success.Status code 201",
-			request: "/",
+			name:        "Success.Status code 201",
+			request:     "/",
 			contentType: "text/plain; charset=utf-8",
-			url: "https://yandex.ru",
-			want : want{
+			url:         "https://yandex.ru",
+			want: want{
 				contentType: "text/plain",
-				statusCode: 201,
+				statusCode:  201,
 			},
 		},
 		{
-			name: "Unsupported Media Type.Status code 415",
-			request: "/",
+			name:        "Unsupported Media Type.Status code 415",
+			request:     "/",
 			contentType: "application/json",
-			url: "https://yandex.ru",
-			want : want{
+			url:         "https://yandex.ru",
+			want: want{
 				contentType: "text/plain; charset=utf-8",
-				statusCode: 415,
+				statusCode:  415,
 			},
 		},
 	}
 
-	for _,tt := range tests {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
@@ -63,7 +62,7 @@ func TestPostUrlHandler(t *testing.T) {
 			body, err := io.ReadAll(res.Body)
 			require.NoError(t, err, "Ошибка чтения тела ответа")
 			err = res.Body.Close()
-            require.NoError(t, err)
+			require.NoError(t, err)
 
 			assert.NotEmpty(t, string(body), "Тело ответа пустое")
 		})
@@ -77,9 +76,9 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.
 	require.NoError(t, err)
 
 	respBody, err := io.ReadAll(resp.Body)
-    require.NoError(t, err)
+	require.NoError(t, err)
 
-    return resp, string(respBody)
+	return resp, string(respBody)
 }
 
 func TestGetUrlHandler(t *testing.T) {
@@ -88,39 +87,38 @@ func TestGetUrlHandler(t *testing.T) {
 	id := repository.CreateNewId(url)
 
 	type want struct {
-		statusCode int
+		statusCode     int
 		locationHeader string
 	}
 
 	tests := []struct {
-		name string
-		request string
+		name        string
+		request     string
 		contentType string
-		id string
-		want want
+		id          string
+		want        want
 	}{
 		{
-			name: "Success.Status code 307",
-			request: "/"+id,
-			want : want{
-				statusCode: 200,
+			name:    "Success.Status code 307",
+			request: "/" + id,
+			want: want{
+				statusCode:     200,
 				locationHeader: url,
 			},
 		},
 		{
-			name: "BadRequest.Status code 400",
+			name:    "BadRequest.Status code 400",
 			request: "/jhfybHYF",
-			want : want{
+			want: want{
 				statusCode: 400,
 			},
 		},
 	}
 
-	for _,tt := range tests {
+	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ts := httptest.NewServer(BasicRouter())
-			res , _:= testRequest(t, ts, http.MethodGet, tt.request)
-
+			res, _ := testRequest(t, ts, http.MethodGet, tt.request)
 
 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 			// assert.Equal(t, tt.want.locationHeader, res.Header.Get("Location"), "Отличный от %v заголовок Location", tt.want.locationHeader)
@@ -128,7 +126,3 @@ func TestGetUrlHandler(t *testing.T) {
 		})
 	}
 }
-
-
-
-

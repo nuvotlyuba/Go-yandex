@@ -4,30 +4,34 @@ import (
 	"flag"
 	"log"
 
+	"github.com/caarlos0/env/v10"
 	"github.com/nuvotlyuba/Go-yandex/config"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver"
 )
 
-var (
-	netAddr = new(config.NetAddress)
-)
+var serverAddress string
+
 func init() {
-	flag.Var(netAddr, "a", "Net address host:port")
+	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
 }
-
 func main() {
-	_= flag.Value(netAddr)
 	flag.Parse()
+	serverAddress = parseServerAddress(serverAddress)
 
-	config := apiserver.NewConfig()
-	config.Set(netAddr.Host, netAddr.Port)
+	cfg := &config.Config{
+		// SeverAddress: config.SeverAddress,
+	}
 
-	s := apiserver.New(config.Get())
+	err := env.Parse(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	config := apiserver.NewConfig(serverAddress)
+
+	s := apiserver.New(config)
 	if err := s.Start(); err != nil {
 		panic(err)
 	}
-	log.Fatal("Starting server ...")
-
-
 
 }

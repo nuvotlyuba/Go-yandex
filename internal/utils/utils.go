@@ -6,7 +6,6 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/config"
 )
 
-
 func GenerateToken(length int) string {
 	letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	b := make([]byte, length)
@@ -18,7 +17,7 @@ func GenerateToken(length int) string {
 
 func StringUrl(baseUrl, id string) string {
 	if baseUrl == "" {
-		return  config.GetDefaultBaseUrl() + "/" + id
+		return config.GetEnv("BASE_URL", config.BaseUrl) + "/" + id
 	}
 	return baseUrl + "/" + id
 }
