@@ -12,7 +12,7 @@ var baseURL string
 
 func parseFlags() {
 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
-	flag.StringVar(&baseURL,       "b", "", "Base URL host:port")
+	flag.StringVar(&baseURL, "b", "", "Base URL host:port")
 	flag.Parse()
 
 	if serverAddress != "" {
@@ -24,12 +24,12 @@ func parseFlags() {
 	}
 
 	envServerAddress := os.Getenv("SERVER_ADDRESS")
-	if serverAddress == "" &&  envServerAddress != ""  {
+	if serverAddress == "" && envServerAddress != "" {
 		config.ServerAddress = envServerAddress
 	}
 
 	envBaseURL := os.Getenv("BASE_URL")
-	if baseURL == "" &&  envBaseURL != "" {
+	if baseURL == "" && envBaseURL != "" {
 		config.BaseURL = envBaseURL
 	}
 }

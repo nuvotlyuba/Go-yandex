@@ -11,7 +11,6 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-
 func PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
