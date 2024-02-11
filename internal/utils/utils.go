@@ -2,8 +2,6 @@ package utils
 
 import (
 	"math/rand"
-
-	"github.com/nuvotlyuba/Go-yandex/config"
 )
 
 func GenerateToken(length int) string {
@@ -16,8 +14,5 @@ func GenerateToken(length int) string {
 }
 
 func StringURL(baseURL, id string) string {
-	if baseURL == "" {
-		return config.GetEnv("BASE_URL", config.BaseURL) + "/" + id
-	}
 	return baseURL + "/" + id
 }

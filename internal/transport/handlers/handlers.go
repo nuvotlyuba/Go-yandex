@@ -1,33 +1,18 @@
 package handlers
 
 import (
-	"flag"
 	"io"
 	"net/http"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/nuvotlyuba/Go-yandex/config"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-var baseURL string
-
-func init() {
-	flag.StringVar(&baseURL, "b", "", "Base url for short links")
-}
-
-func BasicRouter() chi.Router {
-	r := chi.NewRouter()
-
-	r.Post("/", PostURLHandler)
-	r.Get("/{id}", GetURLHandler)
-
-	return r
-}
 
 func PostURLHandler(w http.ResponseWriter, r *http.Request) {
-	flag.Parse()
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
 		http.Error(w, "", http.StatusUnsupportedMediaType)
@@ -40,12 +25,11 @@ func PostURLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responseString := string(responseData)
-	baseURL = parseBaseURL(baseURL)
 
 	id := repository.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, utils.StringURL(baseURL, id))
+	io.WriteString(w, utils.StringURL(config.BaseURL, id))
 
 }
 

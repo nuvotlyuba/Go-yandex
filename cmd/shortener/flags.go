@@ -1,33 +1,35 @@
 package main
 
 import (
+	"flag"
 	"os"
 
 	"github.com/nuvotlyuba/Go-yandex/config"
 )
 
-// var serverAddress string
+var serverAddress string
+var baseURL string
 
-// func parseServerAddress() string{
-// 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
+func parseFlags() {
+	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
+	flag.StringVar(&baseURL,       "b", "", "Base URL host:port")
+	flag.Parse()
 
-// 	if envServerAddress := config.GetEnv("SERVER_ADDRESS", config.SeverAddress); envServerAddress != "" {
-// 		serverAddress = envServerAddress
-// 	}
+	if serverAddress != "" {
+		config.ServerAddress = serverAddress
+	}
 
-// 	return serverAddress
-// }
-
-func parseServerAddress(flagServerAddress string) string {
-	if flagServerAddress != "" {
-		return flagServerAddress
+	if baseURL != "" {
+		config.BaseURL = baseURL
 	}
 
 	envServerAddress := os.Getenv("SERVER_ADDRESS")
-
-	if flagServerAddress == "" && envServerAddress != "" {
-		return envServerAddress
+	if serverAddress == "" &&  envServerAddress != ""  {
+		config.ServerAddress = envServerAddress
 	}
 
-	return config.ServerAddress
+	envBaseURL := os.Getenv("BASE_URL")
+	if baseURL == "" &&  envBaseURL != "" {
+		config.BaseURL = envBaseURL
+	}
 }
