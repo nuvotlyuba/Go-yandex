@@ -1,26 +1,28 @@
 package repository
 
-import "github.com/nuvotlyuba/Go-yandex/internal/utils"
+import (
+	"github.com/nuvotlyuba/Go-yandex/internal/models"
+	"github.com/nuvotlyuba/Go-yandex/internal/utils"
+)
 
-type URLItem struct {
-	ID      string
-	LongURL string
-}
 
-var URLData []URLItem
+type Repo struct{}
 
-func CreateNewID(responseString string) string {
+var data models.URLData
+
+func (r Repo) CreateNewID(responseString string) string {
 	id := utils.GenerateToken(8)
-	newURL := URLItem{ID: id, LongURL: responseString}
-	URLData = append(URLData, newURL)
+
+	newURL := models.URLItem{ID: id, LongURL: responseString}
+	data = append(data, newURL)
 	return id
 }
 
-func GetItemByID(id string) (item URLItem, isFind bool) {
-	for _, item := range URLData {
+func (r Repo) GetItemByID(id string) (item models.URLItem, isFind bool) {
+	for _, item := range data {
 		if item.ID == id {
 			return item, true
 		}
 	}
-	return URLItem{}, false
+	return models.URLItem{}, false
 }

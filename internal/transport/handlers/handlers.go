@@ -11,7 +11,10 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-func PostURLHandler(w http.ResponseWriter, r *http.Request) {
+type Store struct {}
+var repo = new(repository.Repo)
+
+func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	contentType := r.Header.Get("Content-Type")
 	if !strings.Contains(contentType, "text/plain") {
 		http.Error(w, "", http.StatusUnsupportedMediaType)
@@ -25,18 +28,18 @@ func PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
-	id := repository.CreateNewID(responseString)
+	id := repo.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w, utils.StringURL(config.BaseURL, id))
 
 }
 
-func GetURLHandler(w http.ResponseWriter, r *http.Request) {
+func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 
-	url, isFind := repository.GetItemByID(id)
+	url, isFind := repo.GetItemByID(id)
 	if !isFind {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return

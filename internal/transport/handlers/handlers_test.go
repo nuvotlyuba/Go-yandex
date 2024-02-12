@@ -53,7 +53,8 @@ func TestPostUrlHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
 			r.Header.Set("Content-Type", tt.contentType)
-			PostURLHandler(w, r)
+			s := new(Store)
+			s.PostURLHandler(w, r)
 			res := w.Result()
 
 			assert.Equal(t, tt.want.contentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.want.contentType)
@@ -82,7 +83,8 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 func TestGetUrlHandler(t *testing.T) {
 
 	url := "https://yandex.ru"
-	id := repository.CreateNewID(url)
+	r := new(repository.Repo)
+	id := r.CreateNewID(url)
 
 	type want struct {
 		statusCode     int
