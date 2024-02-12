@@ -11,7 +11,8 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-type Store struct {}
+type Store struct{}
+
 var repo = new(repository.Repo)
 
 func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
