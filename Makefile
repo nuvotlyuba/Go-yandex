@@ -1,5 +1,5 @@
 build:
-		go build -v ./cmd/shortener
+	go test ./... && go fmt ./... && go build -v ./cmd/shortener
 t:
 	go mod tidy
 
@@ -16,4 +16,4 @@ start:
 	go run ./cmd/shortener
 
 fmt:
-	go fmt ./...
+	go fmt ./... && staticcheck ./...
