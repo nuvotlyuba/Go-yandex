@@ -9,14 +9,15 @@ import (
 )
 
 func main() {
+	//переменные окружения
 	cfg := &config.Config{}
 	err := env.Parse(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 	parseFlags()
-	config := apiserver.NewConfig(config.ServerAddress)
 
+	config := apiserver.NewConfig()
 	s := apiserver.New(config)
 	if err := s.Start(); err != nil {
 		panic(err)

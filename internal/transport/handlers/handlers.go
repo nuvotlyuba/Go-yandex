@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"io"
+	"log"
 	"net/http"
 	"strings"
 
@@ -30,6 +31,7 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
+	log.Default().Print("Создание короткой ссылки")
 	id := repo.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
@@ -46,7 +48,7 @@ func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
-
+	log.Default().Print("Получение оригинальной ссылки")
 	w.Header().Set("Location", url.LongURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -117,7 +118,8 @@ func TestGetUrlHandler(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ts := httptest.NewServer(BasicRouter())
+			r := chi.NewRouter()
+			ts := httptest.NewServer(BasicRouter(r))
 			res := testRequest(t, ts, http.MethodGet, tt.request)
 			res.Body.Close()
 

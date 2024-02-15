@@ -3,6 +3,9 @@ package apiserver
 import (
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httplog/v2"
 	"github.com/nuvotlyuba/Go-yandex/internal/transport/handlers"
 )
 
@@ -17,7 +20,20 @@ func New(config *APIConfig) *APIServer {
 }
 
 func (s *APIServer) Start() error {
-	addr := s.config.ServerAddress
+	server := &http.Server{
+		Addr:         s.config.ServerAddress,
+		WriteTimeout: s.config.WriteTimeout,
+		ReadTimeout:  s.config.ReadTimeout,
+		Handler:      service(),
+	}
 
-	return http.ListenAndServe(addr, handlers.BasicRouter())
+	return server.ListenAndServe()
+}
+
+func service() http.Handler {
+	r := chi.NewRouter()
+	r.Use(httplog.RequestLogger(Logger(), []string{"/ping"}))
+	r.Use(middleware.Heartbeat("/ping"))
+
+	return handlers.BasicRouter(r)
 }

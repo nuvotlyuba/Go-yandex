@@ -1,5 +1,5 @@
 build:
-	go test ./... && go fmt ./... && go build -v ./cmd/shortener
+	rm -f shortener && go test ./... && go fmt ./... && staticcheck ./... && go build -v ./cmd/shortener
 t:
 	go mod tidy
 
