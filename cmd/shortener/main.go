@@ -15,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//флаги
 	parseFlags()
 
 	config := apiserver.NewConfig()
