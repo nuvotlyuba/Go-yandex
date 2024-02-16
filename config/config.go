@@ -2,7 +2,7 @@ package config
 
 var (
 	BaseURL       = "http://localhost:8080"
-	ServerAddress = "localhost:8080"
+	ServerAddress = ":8080"
 	WriteTimeout  = 10
 	ReadTimeout   = 10
 )

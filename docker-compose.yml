@@ -1,0 +1,28 @@
+version: '3.8'
+
+networks:
+  default:
+    name: go-yandex-networks
+
+services:
+  back:
+    container_name: app
+    build: .
+    command: go run ./cmd/shortener
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/go-yandex
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+    image: postgres:12.4-alpine
+    ports:
+      - "7777:5432"
+
