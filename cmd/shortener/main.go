@@ -1,24 +1,23 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/caarlos0/env/v10"
-	"github.com/nuvotlyuba/Go-yandex/config"
+	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver"
 )
 
 func main() {
 	//переменные окружения
-	cfg := &config.Config{}
-	err := env.Parse(cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
+	config := configs.LoadConfig()
+
+	//флаги
 	parseFlags()
 
-	config := apiserver.NewConfig()
-	s := apiserver.New(config)
+	//конфигурируем сервер
+	cfg := apiserver.NewConfig(config)
+	fmt.Println(cfg, "cfg main")
+	s := apiserver.New(cfg)
 	if err := s.Start(); err != nil {
 		panic(err)
 	}

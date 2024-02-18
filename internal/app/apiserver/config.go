@@ -3,7 +3,7 @@ package apiserver
 import (
 	"time"
 
-	"github.com/nuvotlyuba/Go-yandex/config"
+	"github.com/nuvotlyuba/Go-yandex/configs"
 )
 
 type APIConfig struct {
@@ -12,10 +12,10 @@ type APIConfig struct {
 	ReadTimeout   time.Duration
 }
 
-func NewConfig() *APIConfig {
+func NewConfig(cfg *configs.Config) *APIConfig {
 	return &APIConfig{
-		ServerAddress: config.ServerAddress,
-		WriteTimeout:  time.Second * time.Duration(config.WriteTimeout),
-		ReadTimeout:   time.Second * time.Duration(config.ReadTimeout),
+		ServerAddress: configs.ServerAddress,
+		WriteTimeout:  time.Second * time.Duration(cfg.WriteTimeout),
+		ReadTimeout:   time.Second * time.Duration(cfg.ReadTimeout),
 	}
 }
