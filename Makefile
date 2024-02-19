@@ -12,6 +12,9 @@ test_app:
 start:
 	go run ./cmd/shortener
 
+flags:
+	go run ./cmd/shortener -a :3333 -b http://localhost:3333
+
 fmt_app:
 	go fmt ./... && staticcheck ./...
 
@@ -26,3 +29,4 @@ clean:
 
 develop: docker_build docker_run_sh
 
+lint: golangci-lint run

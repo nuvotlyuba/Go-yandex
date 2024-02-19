@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nuvotlyuba/Go-yandex/config"
+	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
@@ -35,7 +35,7 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	id := repo.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, utils.StringURL(config.BaseURL, id))
+	io.WriteString(w, utils.StringURL(configs.BaseURL, id))
 
 }
 

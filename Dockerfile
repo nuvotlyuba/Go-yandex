@@ -9,9 +9,7 @@ WORKDIR /go-yandex
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod download
-RUN apk update
-RUN apk add make
+RUN go mod download && apk update && apk add make
 
 COPY . .
 

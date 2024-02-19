@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/nuvotlyuba/Go-yandex/config"
+	"github.com/nuvotlyuba/Go-yandex/configs"
 )
 
 var serverAddress string
@@ -16,20 +16,21 @@ func parseFlags() {
 	flag.Parse()
 
 	if serverAddress != "" {
-		config.ServerAddress = serverAddress
+		configs.ServerAddress = serverAddress
 	}
 
 	if baseURL != "" {
-		config.BaseURL = baseURL
+		configs.BaseURL = baseURL
 	}
 
 	envServerAddress := os.Getenv("SERVER_ADDRESS")
 	if serverAddress == "" && envServerAddress != "" {
-		config.ServerAddress = envServerAddress
+		configs.ServerAddress = envServerAddress
 	}
 
 	envBaseURL := os.Getenv("BASE_URL")
+
 	if baseURL == "" && envBaseURL != "" {
-		config.BaseURL = envBaseURL
+		configs.BaseURL = envBaseURL
 	}
 }
