@@ -2,14 +2,12 @@ package configs
 
 import (
 	"log"
-	"os"
 
 	"github.com/caarlos0/env/v10"
-	"github.com/joho/godotenv"
 )
 
-var BaseURL string
-var ServerAddress string
+var BaseURL  = "http://localhost:8080"
+var ServerAddress = ":8080"
 
 type Config struct {
 	BaseURL       string `env:"BASE_URL"       envDefault:"localhost:8080"`
@@ -23,13 +21,13 @@ type Config struct {
 }
 
 func LoadConfig() *Config {
-	curDir, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	if err := godotenv.Load(curDir + "/.env"); err != nil {
-		log.Fatal("unable to load .env file: ", err)
-	}
+	// curDir, err := os.Getwd()
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	// if err := godotenv.Load(curDir + "/.env"); err != nil {
+	// 	log.Fatal("unable to load .env file: ", err)
+	// }
 
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
