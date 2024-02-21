@@ -10,6 +10,7 @@ type APIConfig struct {
 	ServerAddress string
 	WriteTimeout  time.Duration
 	ReadTimeout   time.Duration
+	// LogLevel      string
 }
 
 func NewConfig(cfg *configs.Config) *APIConfig {
@@ -17,5 +18,6 @@ func NewConfig(cfg *configs.Config) *APIConfig {
 		ServerAddress: configs.ServerAddress,
 		WriteTimeout:  time.Second * time.Duration(cfg.WriteTimeout),
 		ReadTimeout:   time.Second * time.Duration(cfg.ReadTimeout),
+		// LogLevel:      os.Getenv("LOG_LEVEL"),
 	}
 }
