@@ -26,14 +26,14 @@ func (s *APIServer) Start() error {
 		Addr:         s.config.ServerAddress,
 		WriteTimeout: s.config.WriteTimeout,
 		ReadTimeout:  s.config.ReadTimeout,
-		Handler:      service(s.config.LogLevel),
+		Handler:      service(s),
 	}
 
 	return server.ListenAndServe()
 }
 
-func service(logLevel string) http.Handler {
-	if err := logger.Initialize(logLevel); err != nil {
+func service(cfg *APIServer) http.Handler {
+	if err := logger.Initialize(cfg.config.LogLevel, cfg.config.AppEnv); err != nil {
 		logger.Log.Fatal("Don't initialize logger")
 	}
 	logger.Log.Info("Server running ...", zap.String("address", configs.ServerAddress))

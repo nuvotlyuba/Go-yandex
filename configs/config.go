@@ -5,11 +5,17 @@ import (
 
 	"github.com/caarlos0/env/v10"
 )
+type Stage string
+const (
+	Development Stage = "development"
+	Production Stage  =  "production"
+)
 
 var BaseURL  = "http://localhost:8080"
 var ServerAddress = ":8080"
 
 type Config struct {
+	AppEnv        string `env:"APP_ENV"        envDefault:"development"`
 	BaseURL       string `env:"BASE_URL"       envDefault:"localhost:8080"`
 	ServerAddress string `env:"SERVER_ADDRESS" envDefault:":8080"`
 	LogLevel      string `env:"LOG_LEVEL"      envDefault:"debug"`

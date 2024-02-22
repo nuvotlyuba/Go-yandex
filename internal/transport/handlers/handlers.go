@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
@@ -31,7 +31,7 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
-	log.Default().Print("Создание короткой ссылки")
+	logger.Log.Info("Создание короткой ссылки")
 	id := repo.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
@@ -41,6 +41,7 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 
+
 	id := chi.URLParam(r, "id")
 
 	url, isFind := repo.GetItemByID(id)
@@ -48,7 +49,8 @@ func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
-	log.Default().Print("Получение оригинальной ссылки")
+
+	logger.Log.Info("Получение оригинальной ссылки")
 	w.Header().Set("Location", url.LongURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

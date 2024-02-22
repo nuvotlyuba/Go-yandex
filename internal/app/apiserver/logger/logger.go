@@ -33,14 +33,18 @@ func (r *loggingResponseWriter) WriteHeader(statusCode int) {
 var Log *zap.Logger = zap.NewNop()
 
 
-func Initialize(level string) error {
+func Initialize(level string, appEnv string) error {
 
 	lvl, err := zap.ParseAtomicLevel(level)
 	if err != nil {
 		return err
 	}
-	//проверить переменную окружения на контур
-	cfg := zap.NewProductionConfig()
+	var cfg zap.Config
+	if configs.Stage(appEnv) == configs.Production {
+		cfg = zap.NewProductionConfig()
+	} else {
+		cfg = zap.NewDevelopmentConfig()
+	}
 	cfg.Level = lvl
 
 	zl, err := cfg.Build()
