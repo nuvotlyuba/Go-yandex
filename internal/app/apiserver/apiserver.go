@@ -26,19 +26,18 @@ func (s *APIServer) Start() error {
 		Addr:         s.config.ServerAddress,
 		WriteTimeout: s.config.WriteTimeout,
 		ReadTimeout:  s.config.ReadTimeout,
-		Handler:      service(),
+		Handler:      service(s.config.LogLevel),
 	}
 
 	return server.ListenAndServe()
 }
 
-func service() http.Handler {
-	if err := logger.Initialize("debug"); err != nil {
+func service(logLevel string) http.Handler {
+	if err := logger.Initialize(logLevel); err != nil {
 		logger.Log.Fatal("Don't initialize logger")
 	}
 	logger.Log.Info("Server running ...", zap.String("address", configs.ServerAddress))
 	r := chi.NewRouter()
-	// r.Use(httplog.RequestLogger(Logger(), []string{"/ping"}))
 	r.Use(logger.RequestLogger)
 	r.Use(middleware.Heartbeat("/ping"))
 

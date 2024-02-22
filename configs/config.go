@@ -12,7 +12,7 @@ var ServerAddress = ":8080"
 type Config struct {
 	BaseURL       string `env:"BASE_URL"       envDefault:"localhost:8080"`
 	ServerAddress string `env:"SERVER_ADDRESS" envDefault:":8080"`
-	LogLevel      string `env:"LOG_LEVEL"      envDefault:"debag"`
+	LogLevel      string `env:"LOG_LEVEL"      envDefault:"debug"`
 	WriteTimeout  int    `env:"WRITE_TIMEOUT"  envDefault:"10"`
 	ReadTimeout   int    `env:"READ_TIMEOUT"   envDefault:"10"`
 	DBPort        int    `env:"DB_PORT"        envDefault:"5432"`
