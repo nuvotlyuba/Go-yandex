@@ -129,3 +129,54 @@ func TestGetUrlHandler(t *testing.T) {
 		})
 	}
 }
+
+func TestPostURLJsonHandler(t *testing.T) {
+
+	successBody := `{ "url": "https://yandex.ru" }`
+	errorBody := "https://yandex.ru"
+
+	testCases := []struct {
+		name         		string
+		request      		string
+		body         		string
+		contentType  		string
+		expectedCode 		int
+		expectedContentType string
+	}{
+		{
+			name:        		 "Success.Status code 201",
+			request:     		 "/api/shorten",
+			contentType: 		 "application/json",
+			body:                successBody,
+			expectedContentType: "application/json",
+			expectedCode:        201,
+		},
+		{
+			name:                "Unsupported Media Type.Status code 415",
+			request:             "/api/shorten",
+			contentType:         "text/plain",
+			body:                errorBody,
+			expectedContentType: "",
+			expectedCode:        415,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.body))
+			r.Header.Set("Content-Type", tt.contentType)
+			s := new(Store)
+			s.PostURLJsonHandler(w, r)
+			res := w.Result()
+
+			assert.Equal(t, tt.expectedContentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.expectedContentType)
+			assert.Equal(t, tt.expectedCode, res.StatusCode, "Отличный от %d статус код", tt.expectedCode)
+
+			_, err := io.ReadAll(res.Body)
+			require.NoError(t, err, "Ошибка чтения тела ответа")
+			err = res.Body.Close()
+			require.NoError(t, err)
+		})
+	}
+}

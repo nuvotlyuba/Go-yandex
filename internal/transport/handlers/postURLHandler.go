@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
-	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
@@ -24,7 +23,7 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
-	logger.Log.Info("Создание короткой ссылки")
+
 	id := repo.CreateNewID(responseString)
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)

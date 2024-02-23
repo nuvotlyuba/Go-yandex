@@ -28,6 +28,6 @@ func  WalkRout(r *chi.Mux) {
 	}
 
 	if err := chi.Walk(r, walkFunc); err != nil {
-		fmt.Printf("Logging err: %s\n", err.Error())
+		logger.Log.Warn(fmt.Sprintf("Logging err: %s\n", err.Error()))
 	}
 }

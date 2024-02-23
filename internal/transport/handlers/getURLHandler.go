@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 )
 
 func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +17,6 @@ func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logger.Log.Info("Получение оригинальной ссылки")
 	w.Header().Set("Location", data.URL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

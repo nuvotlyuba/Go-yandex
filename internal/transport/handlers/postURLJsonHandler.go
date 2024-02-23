@@ -15,7 +15,7 @@ func (s Store) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 	contentType := r.Header.Get("Content-Type")
 	if contentType != "application/json" {
 		logger.Log.Debug("got request with bad content-type", zap.String("content-type", contentType))
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusUnsupportedMediaType)
 		return
 	}
 
@@ -33,7 +33,7 @@ func (s Store) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 	resp := models.Response{
 		Result: shortenURL,
 	}
-	logger.Log.Info("Создание короткой ссылки")
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 
