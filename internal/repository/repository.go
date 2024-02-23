@@ -12,7 +12,7 @@ var data models.URLData
 func (r Repo) CreateNewID(responseString string) string {
 	id := utils.GenerateToken(8)
 
-	newURL := models.URLItem{ID: id, LongURL: responseString}
+	newURL := models.URLItem{ID: id, URL: responseString}
 	data = append(data, newURL)
 	return id
 }

@@ -12,6 +12,7 @@ func BasicRouter(r *chi.Mux) chi.Router {
 	s := new(Store)
 	r.Post("/", s.PostURLHandler)
 	r.Get("/{id}", s.GetURLHandler)
+	r.Post("/api/shorten", s.PostURLJsonHandler)
 
 	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		route = strings.Replace(route, "/*/", "/", -1)
