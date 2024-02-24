@@ -57,7 +57,7 @@ func Initialize(level string, appEnv string) error {
 	return nil
 }
 
-func RequestLogger(next http.Handler) http.Handler {
+func LoggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func( w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 

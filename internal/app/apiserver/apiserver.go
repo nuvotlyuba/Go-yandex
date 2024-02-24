@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/gzip"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/transport/handlers"
 	"go.uber.org/zap"
@@ -40,7 +41,8 @@ func service(cfg *APIServer) http.Handler {
 	logger.Log.Info("Server running ...", zap.String("address", configs.ServerAddress))
 
 	r := chi.NewRouter()
-	r.Use(logger.RequestLogger)
+	r.Use(logger.LoggerMiddleware)
+	r.Use(gzip.GzipMiddleware)
 	r.Use(middleware.Heartbeat("/ping"))
 
 	return handlers.BasicRouter(r)
