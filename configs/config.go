@@ -11,20 +11,22 @@ const (
 	Production Stage  =  "production"
 )
 
-var BaseURL  = "http://localhost:8080"
-var ServerAddress = ":8080"
+var BaseURL         = "http://localhost:8080"
+var ServerAddress   = ":8080"
+var FileStoragePath = "/tmp/short-url-db.json"
 
 type Config struct {
-	AppEnv        string `env:"APP_ENV"        envDefault:"development"`
-	BaseURL       string `env:"BASE_URL"       envDefault:"localhost:8080"`
-	ServerAddress string `env:"SERVER_ADDRESS" envDefault:":8080"`
-	LogLevel      string `env:"LOG_LEVEL"      envDefault:"debug"`
-	WriteTimeout  int    `env:"WRITE_TIMEOUT"  envDefault:"10"`
-	ReadTimeout   int    `env:"READ_TIMEOUT"   envDefault:"10"`
-	DBPort        int    `env:"DB_PORT"        envDefault:"5432"`
-	DBUser        string `env:"DB_USER"        envDefault:"user"`
-	DBPassword    string `env:"DB_PASSWORD"    envDefault:"password"`
-	DBHost        string `env:"DB_HOST"        envDefault:"db"`
+	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
+	BaseURL         string `env:"BASE_URL"           envDefault:"localhost:8080"`
+	ServerAddress   string `env:"SERVER_ADDRESS"     envDefault:":8080"`
+	FileStoragePath string `env:"FILE_STORAGE_PATH"  envDefault:"/tmp/short-url-db.json"`
+	LogLevel        string `env:"LOG_LEVEL"          envDefault:"debug"`
+	WriteTimeout    int    `env:"WRITE_TIMEOUT"      envDefault:"10"`
+	ReadTimeout     int    `env:"READ_TIMEOUT"       envDefault:"10"`
+	DBPort          int    `env:"DB_PORT"            envDefault:"5432"`
+	DBUser          string `env:"DB_USER"            envDefault:"user"`
+	DBPassword      string `env:"DB_PASSWORD"        envDefault:"password"`
+	DBHost          string `env:"DB_HOST"            envDefault:"db"`
 }
 
 func LoadConfig() *Config {
