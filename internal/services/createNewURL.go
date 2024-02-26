@@ -7,17 +7,17 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-func (s Service) CreateNewURL(longUrl string) (*models.URL, error ) {
+func (s Service) CreateNewURL(longURL string) (*models.URL, error ) {
 	token := utils.GenerateToken(8)
 
 	newURL := models.URL{
 		UUID: uuid.New(),
 		ShortURL: utils.GetShortURL(token),
-		OriginalUrl: longUrl,
+		OriginalURL: longURL,
 	}
 
 	repo := new(repository.Repo)
-	err := repo.InsertNewUrl(&newURL)
+	err := repo.InsertNewURL(&newURL)
 
 	return &newURL, err
 }

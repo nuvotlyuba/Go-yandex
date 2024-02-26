@@ -7,7 +7,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
-func (r Repo) InsertNewUrl(data *models.URL) error {
+func (r Repo) InsertNewURL(data *models.URL) error {
 
 	if configs.FileStoragePath != "" {
 		fmt.Println(configs.FileStoragePath, "path")
@@ -26,7 +26,6 @@ func (r Repo) InsertNewUrl(data *models.URL) error {
 	}
 
 	//берем значение из переменной
-	DataUrl = append(DataUrl, data)
-	fmt.Println(DataUrl, "DATA")
+	DataURL = append(DataURL, data)
 	return nil
 }

@@ -10,13 +10,13 @@ import (
 
 
 func (r Repo) GetURL(token string)  (*models.URL, error) {
-	shortUrl := utils.GetShortURL(token)
+	shortURL := utils.GetShortURL(token)
 	var result *models.URL
 
 	//возвращаем из переменной
 	if configs.FileStoragePath == "" {
-		for _, v := range DataUrl {
-			if v.ShortURL == shortUrl {
+		for _, v := range DataURL {
+			if v.ShortURL == shortURL {
 				result = v
 			}
 		}
@@ -29,7 +29,7 @@ func (r Repo) GetURL(token string)  (*models.URL, error) {
 		return nil, err
 	}
 	rr.Split()
-	data, err := rr.ReadURL(shortUrl)
+	data, err := rr.ReadURL(shortURL)
 	if err != nil {
 		return nil, err
 	}

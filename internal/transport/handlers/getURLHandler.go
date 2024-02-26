@@ -12,7 +12,7 @@ func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	service := new(services.Service)
-	data, err := service.FindUrl(id)
+	data, err := service.FindURL(id)
 	if err != nil {
 		http.Error(w, error.Error(err), http.StatusBadRequest)
 		return
@@ -23,6 +23,6 @@ func (s Store) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Location", data.OriginalUrl)
+	w.Header().Set("Location", data.OriginalURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/repository"
 )
 
-func (s Service) FindUrl(token string) (*models.URL, error) {
+func (s Service) FindURL(token string) (*models.URL, error) {
 
 	repo := new(repository.Repo)
 	data, err := repo.GetURL(token)
