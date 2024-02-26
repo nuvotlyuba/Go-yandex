@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"compress/gzip"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nuvotlyuba/Go-yandex/internal/repository"
+	"github.com/nuvotlyuba/Go-yandex/internal/services"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,23 +33,13 @@ func TestPostUrlHandler(t *testing.T) {
 		{
 			name:        "Success.Status code 201",
 			request:     "/",
-			contentType: "text/plain; charset=utf-8",
+			contentType: "text/plain",
 			url:         "https://yandex.ru",
 			want: want{
 				contentType: "text/plain",
 				statusCode:  201,
 			},
 		},
-		// {
-		// 	name:        "Unsupported Media Type.Status code 415",
-		// 	request:     "/",
-		// 	contentType: "application/json",
-		// 	url:         "https://yandex.ru",
-		// 	want: want{
-		// 		contentType: "text/plain; charset=utf-8",
-		// 		statusCode:  415,
-		// 	},
-		// },
 	}
 
 	for _, tt := range tests {
@@ -86,8 +77,9 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 func TestGetUrlHandler(t *testing.T) {
 
 	url := "https://yandex.ru"
-	r := new(repository.Repo)
-	id := r.CreateNewID(url)
+	s:= new(services.Service)
+	data, _ := s.CreateNewURL(url)
+	fmt.Println(strings.Split(data.ShortURL, "/")[3], "ShortURL")
 
 	type want struct {
 		statusCode     int
@@ -103,7 +95,7 @@ func TestGetUrlHandler(t *testing.T) {
 	}{
 		{
 			name:    "Success.Status code 307",
-			request: "/" + id,
+			request:  "/" + strings.Split(data.ShortURL, "/")[3],
 			want: want{
 				statusCode:     200,
 				locationHeader: url,
@@ -153,14 +145,6 @@ func TestPostURLJsonHandler(t *testing.T) {
 			expectedContentType: "application/json",
 			expectedCode:        201,
 		},
-		// {
-		// 	name:                "Unsupported Media Type.Status code 415",
-		// 	request:             "/api/shorten",
-		// 	contentType:         "text/plain",
-		// 	body:                errorBody,
-		// 	expectedContentType: "",
-		// 	expectedCode:        415,
-		// },
 	}
 
 	for _, tt := range testCases {

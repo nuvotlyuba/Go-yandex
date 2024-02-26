@@ -13,7 +13,7 @@ const (
 
 var BaseURL         = "http://localhost:8080"
 var ServerAddress   = ":8080"
-var FileStoragePath = "/tmp/short-url-db.json"
+var FileStoragePath = ""
 
 type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`

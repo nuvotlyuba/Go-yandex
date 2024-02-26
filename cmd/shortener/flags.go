@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
 var serverAddress   string
@@ -14,8 +15,9 @@ var fileStoragePath string
 func parseFlags() {
 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
 	flag.StringVar(&baseURL, "b", "", "Base URL host:port")
-	flag.StringVar(&fileStoragePath, "f", "empty", "Full file name, for saving JSON data")
+	flag.StringVar(&fileStoragePath, "f", "", "Full file name, for saving JSON data")
 	flag.Parse()
+
 
 	//serverAddress
 	if serverAddress != "" {
@@ -36,13 +38,23 @@ func parseFlags() {
 	}
 
 	//fileStoragePath
+	//создаем папку
 	envFileStoragePath := os.Getenv("FILE_STORAGE_PATH")
 	if envFileStoragePath != "" {
 		configs.FileStoragePath  = envFileStoragePath
+		os.MkdirAll(utils.GetDirsFromPath(configs.FileStoragePath), 0777)
+
 	}
 
-	if envFileStoragePath == "" && fileStoragePath != "empty" {
+	//создаем папку из флага
+	if envFileStoragePath == "" && fileStoragePath != "" {
+		configs.FileStoragePath = fileStoragePath
+		os.MkdirAll(utils.GetDirsFromPath(configs.FileStoragePath), 0777)
+
+	}
+
+	//не создаем папку
+	if envFileStoragePath == "" && fileStoragePath != "" {
 		configs.FileStoragePath = fileStoragePath
 	}
-
 }

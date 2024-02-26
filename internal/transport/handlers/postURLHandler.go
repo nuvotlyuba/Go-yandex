@@ -4,16 +4,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/nuvotlyuba/Go-yandex/configs"
-	"github.com/nuvotlyuba/Go-yandex/internal/utils"
+	"github.com/nuvotlyuba/Go-yandex/internal/services"
 )
 
 func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
-	// contentType := r.Header.Get("Content-Type")
-	// if !strings.Contains(contentType, "text/plain") {
-	// 	http.Error(w, "", http.StatusUnsupportedMediaType)
-	// 	return
-	// }
 	responseData, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
@@ -22,10 +16,14 @@ func (s Store) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
-
-	id := repo.CreateNewID(responseString)
+	ss := new(services.Service)
+	data, err := ss.CreateNewURL(responseString)
+	if err != nil {
+		http.Error(w, "Не удалось получить короткую ссылку", http.StatusBadRequest)
+		return
+	}
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, utils.StringURL(configs.BaseURL, id))
+	io.WriteString(w, data.ShortURL)
 
 }

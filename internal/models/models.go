@@ -1,8 +1,16 @@
 package models
 
+import "github.com/google/uuid"
+
 type URLItem struct {
 	ID      string `json:"id"`
 	URL     string `json:"Url"`
+}
+
+type URL struct {
+	UUID        uuid.UUID `json:"uuid"`
+	ShortURL    string    `json:"short_url"`
+	OriginalUrl string    `json:"original_url"`
 }
 
 type URLData []URLItem
