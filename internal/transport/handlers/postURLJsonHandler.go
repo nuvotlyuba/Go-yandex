@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
@@ -11,12 +12,6 @@ import (
 )
 
 func (s Store) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
-	contentType := r.Header.Get("Content-Type")
-	if contentType != "application/json" {
-		logger.Log.Debug("got request with bad content-type", zap.String("content-type", contentType))
-		w.WriteHeader(http.StatusUnsupportedMediaType)
-		return
-	}
 
 	var req models.RequestBody
 	dec := json.NewDecoder(r.Body)
@@ -35,12 +30,14 @@ func (s Store) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 	resp := models.Response{
 		Result: data.ShortURL,
 	}
+	fmt.Println(resp, "resp!!!")
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 
 	enc := json.NewEncoder(w)
 	if err := enc.Encode(resp); err != nil {
+		fmt.Println(err, "errrrrrrrrrrrr")
 	logger.Log.Debug("error encoding response", zap.Error(err))
 		return
 	}

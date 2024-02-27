@@ -127,7 +127,7 @@ func TestGetUrlHandler(t *testing.T) {
 func TestPostURLJsonHandler(t *testing.T) {
 
 	successBody := `{ "url": "https://yandex.ru" }`
-	// errorBody := "https://yandex.ru"
+
 
 	testCases := []struct {
 		name         		string
@@ -185,14 +185,6 @@ func TestGzipCompression( t *testing.T) {
 			expectedContentType: "text/plain",
 			expectedCode:        201,
 		},
-		// {
-		// 	name:                "Send gzip.Success.Status code 201.URL:/api/shorten",
-		// 	request:             "/api/shorten",
-		// 	contentType:         "application/json",
-		// 	body:                `{"url": "https://yandex.ru"}`,
-		// 	expectedContentType: "application/json",
-		// 	expectedCode:        201,
-		// },
 	}
 
 	for _, tt := range testCases {
@@ -214,10 +206,6 @@ func TestGzipCompression( t *testing.T) {
 				s.PostURLHandler(w,r)
 				res = w.Result()
 			}
-			// if tt.contentType == "application/json" {
-			// 	s.PostURLJsonHandler(w, r)
-			// 	res = w.Result()
-			// }
 			assert.Equal(t, tt.expectedContentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.expectedContentType)
 			assert.Equal(t, tt.expectedCode, res.StatusCode, "Отличный от %d статус код", tt.expectedCode)
 
