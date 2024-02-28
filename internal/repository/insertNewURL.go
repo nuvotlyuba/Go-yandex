@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
@@ -10,7 +8,6 @@ import (
 func (r Repo) InsertNewURL(data *models.URL) error {
 
 	if configs.FileStoragePath != "" {
-		fmt.Println(configs.FileStoragePath, "path")
 		//сохраняем на диск в файле
 		w, err := NewURLRecorder(configs.FileStoragePath)
 		if err != nil {

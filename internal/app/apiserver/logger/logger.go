@@ -5,6 +5,7 @@ import (
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 type (
 	responseData struct {
@@ -29,7 +30,14 @@ func (r *loggingResponseWriter) WriteHeader(statusCode int) {
 	r.responseData.status = statusCode
 }
 
+
 var Log *zap.Logger = zap.NewNop()
+
+func Info(msg string, field ...zapcore.Field)   {Log.Info(msg, field...)}
+
+func Debug(msg string, fields ...zapcore.Field) {Log.Debug(msg, fields...)}
+
+func Fatal(msg string, fields ...zapcore.Field) {Log.Fatal(msg, fields...)}
 
 
 func Initialize(level string, appEnv string) error {
@@ -55,6 +63,5 @@ func Initialize(level string, appEnv string) error {
 
 	return nil
 }
-
 
 

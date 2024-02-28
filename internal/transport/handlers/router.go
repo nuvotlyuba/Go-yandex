@@ -23,11 +23,11 @@ func BasicRouter(r *chi.Mux) chi.Router {
 func  WalkRout(r *chi.Mux) {
 	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		route = strings.Replace(route, "/*/", "/", -1)
-		logger.Log.Info(fmt.Sprintf("%s %s\n", method, route))
+		logger.Info(fmt.Sprintf("%s %s\n", method, route))
 		return nil
 	}
 
 	if err := chi.Walk(r, walkFunc); err != nil {
-		logger.Log.Warn(fmt.Sprintf("Logging err: %s\n", err.Error()))
+		logger.Debug(fmt.Sprintf("Logging err: %s\n", err.Error()))
 	}
 }

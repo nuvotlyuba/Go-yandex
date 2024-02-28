@@ -35,10 +35,10 @@ func (s *APIServer) Start() error {
 
 func service(cfg *APIServer) http.Handler {
 	if err := logger.Initialize(cfg.config.LogLevel, cfg.config.AppEnv); err != nil {
-		logger.Log.Fatal("Don't initialize logger")
+		logger.Fatal("Don't initialize logger")
 	}
 
-	logger.Log.Info("Server running ...", zap.String("address", configs.ServerAddress))
+	logger.Info("Server running ...", zap.String("address", configs.ServerAddress))
 
 	r := chi.NewRouter()
 	r.Use(logger.LoggerMiddleware)

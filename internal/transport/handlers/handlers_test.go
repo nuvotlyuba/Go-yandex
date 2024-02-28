@@ -3,7 +3,6 @@ package handlers
 import (
 	"bytes"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -79,7 +78,7 @@ func TestGetUrlHandler(t *testing.T) {
 	url := "https://yandex.ru"
 	s:= new(services.Service)
 	data, _ := s.CreateNewURL(url)
-	fmt.Println(strings.Split(data.ShortURL, "/")[3], "ShortURL")
+	successRequest := "/" + strings.Split(data.ShortURL, "/")[3]
 
 	type want struct {
 		statusCode     int
@@ -95,7 +94,7 @@ func TestGetUrlHandler(t *testing.T) {
 	}{
 		{
 			name:    "Success.Status code 307",
-			request:  "/" + strings.Split(data.ShortURL, "/")[3],
+			request:  successRequest,
 			want: want{
 				statusCode:     200,
 				locationHeader: url,
