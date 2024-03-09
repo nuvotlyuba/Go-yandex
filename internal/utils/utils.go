@@ -2,6 +2,9 @@ package utils
 
 import (
 	"math/rand"
+	"strings"
+
+	"github.com/nuvotlyuba/Go-yandex/configs"
 )
 
 func GenerateToken(length int) string {
@@ -13,6 +16,13 @@ func GenerateToken(length int) string {
 	return string(b)
 }
 
-func StringURL(baseURL, id string) string {
-	return baseURL + "/" + id
+func GetShortURL(id string) string {
+	return configs.BaseURL + "/" + id
+}
+
+func GetDirsFromPath(path string) string {
+	sl := strings.Split(path, "/")
+	sl = sl[:len(sl)-1]
+    st := strings.Join(sl, "/")
+	return st
 }
