@@ -5,6 +5,7 @@ import (
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver"
+	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 )
 
 func main() {
@@ -19,6 +20,7 @@ func main() {
 	defer cancel()
 
 	cfg := apiserver.NewConfig(config)
+	logger.Info(cfg.DataBaseDSN, "cfg.DataBaseDSN")
 	s := apiserver.New(cfg)
 	if err := s.Start(ctx); err != nil {
 		panic(err)

@@ -50,6 +50,9 @@ func (s *APIServer) Start(ctx context.Context) error {
 	}
 	s.logger.Info("Successfully connected to postgreSQL pool.")
 
+	// if err := s.configureFile(); err != nil {
+	// 	s.logger.Fatal("Unable to open/create file", zap.Error(err))
+	// }
 
 	server := &http.Server{
 		Addr:         s.config.ServerAddress,
@@ -108,6 +111,7 @@ func (s *APIServer) configureRepository(ctx context.Context) error {
 }
 
 func (s *APIServer) configureFile() error {
+	fmt.Println(s.config.FileStorageName, "s.config.FileStorageName")
 	w, err := store.NewURLRecorder(s.config.FileStorageName)
 	if err != nil {
 		return err
