@@ -7,7 +7,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/services"
 )
 
-func (s Handlers) GetURLHandler(w http.ResponseWriter, r *http.Request) {
+func (h Handlers) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 

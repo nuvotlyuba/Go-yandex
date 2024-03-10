@@ -7,7 +7,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/services"
 )
 
-func (s Handlers) PostURLHandler(w http.ResponseWriter, r *http.Request) {
+func (h Handlers) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	responseData, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
