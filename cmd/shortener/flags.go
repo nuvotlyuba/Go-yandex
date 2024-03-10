@@ -64,8 +64,8 @@ func parseFlags() {
 	if dataBaseDSN != "" {
 		configs.DataBaseDSN = dataBaseDSN
 	}
-	envDataBaseDSN := os.Getenv("DATA_BASE_DSN")
-	if envDataBaseDSN != "" {
-		configs.DataBaseDSN = envDataBaseDSN
-	}
+	// envDataBaseDSN := os.Getenv("DATABASE_DSN")
+	// if envDataBaseDSN != "" {
+	// 	configs.DataBaseDSN = envDataBaseDSN
+	// }
 }

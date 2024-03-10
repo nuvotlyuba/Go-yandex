@@ -51,7 +51,6 @@ func (s *APIServer) Start(ctx context.Context) error {
 	s.logger.Info("Successfully connected to postgreSQL pool.")
 
 
-	// repository.New(conn)
 	server := &http.Server{
 		Addr:         s.config.ServerAddress,
 		WriteTimeout: s.config.WriteTimeout,
