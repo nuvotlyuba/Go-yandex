@@ -10,8 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s Store) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
-
+func (s Handlers) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.RequestBody
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		logger.Debug("cannot decode request JSON body", zap.Error(err))

@@ -21,7 +21,7 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 			responseData: responseData,
 		}
 
-		Log.Debug("httpRequest",
+		Debug("httpRequest",
 			zap.String("url", configs.ServerAddress),
 			zap.String("path", r.URL.Path),
 		)
@@ -30,7 +30,7 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 
 		duration := time.Since(start)
 
-		Log.Debug("httpResponse",
+		Debug("httpResponse",
 			zap.Int("status", responseData.status),
 			zap.Int("bytes", responseData.size),
 			zap.Duration("elapsed", duration),

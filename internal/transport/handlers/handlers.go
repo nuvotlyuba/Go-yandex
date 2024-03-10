@@ -1,10 +1,23 @@
 package handlers
 
 import (
-	"github.com/nuvotlyuba/Go-yandex/internal/repository"
+	"net/http"
+
+	"github.com/nuvotlyuba/Go-yandex/internal/store"
 )
 
-type Store struct {
+type Handlers struct {
+	store *store.Store
 }
 
-var repo = new(repository.Repo)
+func New() *Handlers {
+	return &Handlers{
+	}
+}
+
+type Handle interface {
+	GetURLHandler(w http.ResponseWriter, r *http.Request)
+	PostURLHandler(w http.ResponseWriter, r *http.Request)
+	PostURLJsonHandler(w http.ResponseWriter, r *http.Request)
+	GetConnDbHandler()
+}

@@ -11,11 +11,13 @@ import (
 var serverAddress   string
 var baseURL         string
 var fileStoragePath string
+var dataBaseDSN     string
 
 func parseFlags() {
 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
 	flag.StringVar(&baseURL, "b", "", "Base URL host:port")
 	flag.StringVar(&fileStoragePath, "f", "", "Full file name, for saving JSON data")
+	flag.StringVar(&dataBaseDSN, "d", "", "Data sourse name for postgresDB")
 	flag.Parse()
 
 
@@ -56,5 +58,14 @@ func parseFlags() {
 	//не создаем папку
 	if envFileStoragePath == "" && fileStoragePath != "" {
 		configs.FileStoragePath = fileStoragePath
+	}
+
+	//dataBaseDSN
+	if dataBaseDSN != "" {
+		configs.DataBaseDSN = dataBaseDSN
+	}
+	envDataBaseDSN := os.Getenv("DATA_BASE_DSN")
+	if envDataBaseDSN != "" {
+		configs.DataBaseDSN = envDataBaseDSN
 	}
 }

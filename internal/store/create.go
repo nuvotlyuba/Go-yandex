@@ -1,11 +1,11 @@
-package repository
+package store
 
 import (
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
-func (r Repo) InsertNewURL(data *models.URL) error {
+func (r *FileRepository) InsertNewURL(data *models.URL) error {
 
 	if configs.FileStoragePath != "" {
 		//сохраняем на диск в файле

@@ -1,4 +1,4 @@
-package repository
+package store
 
 import (
 	"github.com/nuvotlyuba/Go-yandex/configs"
@@ -7,7 +7,7 @@ import (
 )
 
 
-func (r Repo) GetURL(token string)  (*models.URL, error) {
+func (r FileRepository) GetURL(token string)  (*models.URL, error) {
 	shortURL := utils.GetShortURL(token)
 	var result *models.URL
 
@@ -22,12 +22,12 @@ func (r Repo) GetURL(token string)  (*models.URL, error) {
 	}
 
 	//возвращаем из файла
-	rr, err := newURLReader(configs.FileStoragePath)
+	rr, err := NewURLScanner(configs.FileStoragePath)
 	if err != nil {
 		return nil, err
 	}
 	rr.Split()
-	data, err := rr.ReadURL(shortURL)
+	data, err := rr.ScanURL(shortURL)
 	if err != nil {
 		return nil, err
 	}
