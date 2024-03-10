@@ -7,7 +7,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/store"
 )
 
-func (s Service) PingDb(ctx context.Context) error {
+func (s Service) PingDB(ctx context.Context) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 

@@ -11,7 +11,7 @@ import (
 type Store struct{
 	config             *Config
 	db                 *pgxpool.Pool
-	dbRepository       *DbRepository
+	dbRepository       *DBRepository
 	fileRepository     *FileRepository
 	varRepository      *VarRepository
 }
@@ -22,11 +22,11 @@ func New(config *Config) *Store {
 	}
 }
 
-func (r *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
+func (s *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
-	dbpool, err := pgxpool.New(ctx, r.config.DataBaseDSN)
+	dbpool, err := pgxpool.New(ctx, s.config.DataBaseDSN)
 	if err != nil {
 		return err
 	}
@@ -35,22 +35,22 @@ func (r *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
 		return err
 	}
 
-	r.db = dbpool
+	s.db = dbpool
 
 	return nil
 }
 
-func (r *Store) ClosePostgres() {
-	r.db.Close()
+func (s *Store) ClosePostgres() {
+	s.db.Close()
 }
 
 
-func (s *Store) DBRepo() *DbRepository {
+func (s *Store) DBRepo() *DBRepository {
 	if s.dbRepository != nil {
 		return s.dbRepository
 	}
 
-	s.dbRepository = &DbRepository{
+	s.dbRepository = &DBRepository{
 		store: s,
 	}
 

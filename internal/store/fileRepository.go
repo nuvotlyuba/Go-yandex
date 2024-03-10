@@ -102,7 +102,7 @@ type FileRepository struct {
 	FileStoragePath string
 }
 
-func (r *FileRepository) WriteNewUrl(data *models.URL) error {
+func (r *FileRepository) WriteNewURL(data *models.URL) error {
 
 	w, err := NewURLRecorder(r.FileStoragePath)
 	if err != nil {

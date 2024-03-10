@@ -19,5 +19,5 @@ type Handle interface {
 	GetURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLJsonHandler(w http.ResponseWriter, r *http.Request)
-	GetConnDbHandler()
+	GetConnDBHandler()
 }

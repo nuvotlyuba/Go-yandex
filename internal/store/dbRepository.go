@@ -7,24 +7,24 @@ import (
 )
 
 
-type DbRepo interface {
+type DBRepo interface {
 	CreateNewURL(data *models.URL) error
 	GetURL(shortURL string) (*models.URL, error)
 }
 
-type DbRepository struct {
+type DBRepository struct {
 	store *Store
 }
 
-func (r *DbRepository) CreateNewURL(data *models.URL) error {
+func (r *DBRepository) CreateNewURL(data *models.URL) error {
 	return nil
 }
 
-func (r DbRepository) GetURL (shortURL string) (*models.URL, error) {
+func (r DBRepository) GetURL (shortURL string) (*models.URL, error) {
 	return &models.URL{}, nil
 }
 
-func (r DbRepository) Ping(ctx context.Context) error {
+func (r DBRepository) Ping(ctx context.Context) error {
 	if err := r.store.db.Ping(ctx); err != nil {
 		return err
 	}

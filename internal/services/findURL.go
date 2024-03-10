@@ -12,14 +12,14 @@ func (s Service) FindURL(token string) (*models.URL, error) {
 
 	cfg := store.NewConfig()
 	r := store.New(cfg)
-	data, err := r.DBRepo().GetURL(shortenURL)
+	_, err := r.DBRepo().GetURL(shortenURL)
 	if err != nil {
 		return &models.URL{}, err
 	}
 
 	//чтение из файла
 	if configs.FileStoragePath != "" {
-		data, err = r.FileRepo().ReadURL(shortenURL)
+		data, err := r.FileRepo().ReadURL(shortenURL)
 		if err != nil {
 			return &models.URL{}, err
 		}
@@ -27,7 +27,7 @@ func (s Service) FindURL(token string) (*models.URL, error) {
 	}
 
 	//чтение из переменной
-	data, err = r.VarRepo().FindURL(shortenURL)
+	data, err := r.VarRepo().FindURL(shortenURL)
 	if err != nil {
 		return &models.URL{}, err
 	}

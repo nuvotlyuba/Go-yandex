@@ -133,7 +133,7 @@ func BasicRouter(s *APIServer) chi.Router {
 	s.router.Post("/", h.PostURLHandler)
 	s.router.Get("/{id}", h.GetURLHandler)
 	s.router.Post("/api/shorten", h.PostURLJsonHandler)
-	s.router.Get("/ping", h.GetConnDbHandler)
+	s.router.Get("/ping", h.GetConnDBHandler)
 
 	WalkRout(s.router)
 
