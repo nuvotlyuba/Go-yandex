@@ -99,6 +99,7 @@ func (s *APIServer) configureLogger(level string, appEnv string) error {
 
 func (s *APIServer) configureRepository(ctx context.Context) error {
 	r := store.New(s.config.Store)
+	fmt.Println(s.config.DataBaseDSN, "s.config.DataBaseDSN")
 	if err := r.OpenPostgres(ctx, s.config.DataBaseDSN); err != nil {
 		return err
 	}
