@@ -10,14 +10,16 @@ type Handlers struct {
 	store *store.Store
 }
 
-func New() *Handlers {
+
+func New(store *store.Store) *Handlers {
 	return &Handlers{
+		store: store,
 	}
 }
 
-type Handle interface {
+type Handler interface {
 	GetURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLJsonHandler(w http.ResponseWriter, r *http.Request)
-	GetConnDBHandler()
+	GetConnDBHandler(w http.ResponseWriter, r *http.Request)
 }

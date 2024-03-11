@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/services"
+	"github.com/nuvotlyuba/Go-yandex/internal/store"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -46,7 +47,9 @@ func TestPostUrlHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
 			r.Header.Set("Content-Type", tt.contentType)
-			s := New()
+			cfg := store.NewConfig()
+			newStore := store.New(cfg)
+			s := New(newStore)
 			s.PostURLHandler(w, r)
 			res := w.Result()
 
@@ -154,7 +157,9 @@ func TestPostURLJsonHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.body))
 			r.Header.Set("Content-Type", tt.contentType)
-			s := New()
+			cfg := store.NewConfig()
+			newStore := store.New(cfg)
+			s := New(newStore)
 			s.PostURLJsonHandler(w, r)
 			res := w.Result()
 
@@ -202,7 +207,9 @@ func TestGzipCompression( t *testing.T) {
 			r := httptest.NewRequest(http.MethodPost, tt.request, buf)
 			r.Header.Set("Content-Type", tt.contentType)
 			r.Header.Set("Content-Encoding", "gzip, deflate, br")
-			s := New()
+			cfg := store.NewConfig()
+			newStore := store.New(cfg)
+			s := New(newStore)
 			var res *http.Response
 			if tt.contentType == "text/plain; charset=utf-8" {
 				s.PostURLHandler(w,r)
@@ -215,6 +222,42 @@ func TestGzipCompression( t *testing.T) {
 			require.NoError(t, err, "Ошибка чтения тела ответа")
 			err = res.Body.Close()
 			require.NoError(t, err)
+		})
+	}
+}
+
+func TestGetConnDbHandler(t *testing.T) {
+	type want struct {
+		statusCode  int
+	}
+
+	tests := []struct {
+		name        string
+		request     string
+		want        want
+	}{
+		{
+			name:        "Success.Status code 201",
+			request:     "/ping",
+			want: want{
+				statusCode:  200,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
+			cfg := store.NewConfig()
+			fmt.Println(cfg, "cfg")
+			newStore := store.New(cfg)
+			s := New(newStore)
+			s.GetConnDBHandler(w, r)
+			res := w.Result()
+
+			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
+
 		})
 	}
 }

@@ -61,11 +61,11 @@ func parseFlags() {
 	}
 
 	//dataBaseDSN
-	// if dataBaseDSN != "" {
-		// configs.DataBaseDSN = dataBaseDSN
-	// }
-	// envDataBaseDSN := os.Getenv("DATABASE_DSN")
-	// if envDataBaseDSN != "" {
-	// 	configs.DataBaseDSN = envDataBaseDSN
-	// }
+	if dataBaseDSN != "" {
+		configs.DataBaseDSN = dataBaseDSN
+	}
+	envDataBaseDSN := os.Getenv("DATABASE_DSN")
+	if envDataBaseDSN != "" {
+		configs.DataBaseDSN = envDataBaseDSN
+	}
 }

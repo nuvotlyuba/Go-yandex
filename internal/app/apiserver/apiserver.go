@@ -21,8 +21,6 @@ type APIServer struct {
 	logger      *zap.Logger
 	router      *chi.Mux
 	store       *store.Store
-	fileWriter  *store.URLRecorder
-	fileReader  *store.URLScanner
 }
 
 func New(config *APIConfig) *APIServer {
@@ -37,7 +35,7 @@ func (s *APIServer) Start(ctx context.Context) error {
 	if err := s.configureLogger(s.config.LogLevel, s.config.AppEnv); err != nil {
 		s.logger.Fatal("Don't initialize logger")
 	}
-	s.logger.Info("Server running ...", zap.String("address", configs.ServerAddress))
+	s.logger.Info("Server running ...", zap.String("address", s.config.ServerAddress))
 
 	s.router.Use(logger.LoggerMiddleware)
 	s.router.Use(gzip.GzipMiddleware)
@@ -45,14 +43,10 @@ func (s *APIServer) Start(ctx context.Context) error {
 
 	s.logger.Info("Postgres connecting ...")
 	s.logger.Info("postgres env "+s.config.DataBaseDSN)
-	if err := s.configureRepository(ctx); err != nil {
+	if err := s.configureStore(ctx); err != nil {
 		s.logger.Fatal("Unable to create connection pool.", zap.Error(err))
 	}
 	s.logger.Info("Successfully connected to postgreSQL pool.")
-
-	// if err := s.configureFile(); err != nil {
-	// 	s.logger.Fatal("Unable to open/create file", zap.Error(err))
-	// }
 
 	server := &http.Server{
 		Addr:         s.config.ServerAddress,
@@ -97,43 +91,25 @@ func (s *APIServer) configureLogger(level string, appEnv string) error {
 }
 
 
-func (s *APIServer) configureRepository(ctx context.Context) error {
+func (s *APIServer) configureStore(ctx context.Context) error {
 	r := store.New(s.config.Store)
-	fmt.Println(s.config.DataBaseDSN, "s.config.DataBaseDSN")
 	if err := r.OpenPostgres(ctx, s.config.DataBaseDSN); err != nil {
 		return err
 	}
 
 	s.store = r
+	// logger.Info("store", s.store)
 
 	defer s.store.ClosePostgres()
 
 	return nil
 }
 
-func (s *APIServer) configureFile() error {
-	fmt.Println(s.config.FileStorageName, "s.config.FileStorageName")
-	w, err := store.NewURLRecorder(s.config.FileStorageName)
-	if err != nil {
-		return err
-	}
-	defer w.Close()
-
-	s.fileWriter = w
-
-	r, err := store.NewURLScanner(s.config.FileStorageName)
-	if err != nil {
-		return err
-	}
-	s.fileReader = r
-
-	return nil
-}
 
 
 func BasicRouter(s *APIServer) chi.Router {
 
-	h := handlers.New()
+	h := handlers.New(s.store)
 	s.router.Post("/", h.PostURLHandler)
 	s.router.Get("/{id}", h.GetURLHandler)
 	s.router.Post("/api/shorten", h.PostURLJsonHandler)
