@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -23,8 +24,8 @@ func New(config *Config) *Store {
 }
 
 func (s *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
-	// ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	// defer cancel()
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
 	fmt.Println("$$$$$$$$$$$$$")
 	fmt.Println(s.config.DataBaseDSN, "s.config.DataBaseDSN")
 
