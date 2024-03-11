@@ -98,7 +98,6 @@ func (s *APIServer) configureStore(ctx context.Context) error {
 	}
 
 	s.store = r
-	// logger.Info("store", s.store)
 
 	defer s.store.ClosePostgres()
 

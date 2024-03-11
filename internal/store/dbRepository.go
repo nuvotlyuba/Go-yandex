@@ -16,7 +16,8 @@ type DBRepository struct {
 	store *Store
 }
 
-func (r *DBRepository) CreateNewURL(data *models.URL) error {
+func (r *DBRepository) CreateNewURL( data *models.URL) error {
+	// r.store.db.QueryRow(ctx, "")
 	return nil
 }
 
