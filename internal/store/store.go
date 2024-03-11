@@ -27,6 +27,7 @@ func (s *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	fmt.Println("$$$$$$$$$$$$$")
+	fmt.Println(s.config.DataBaseDSN, "s.config.DataBaseDSN")
 
 	dbpool, err := pgxpool.New(ctx, s.config.DataBaseDSN)
 	if err != nil {
