@@ -99,7 +99,7 @@ func (s *APIServer) configureStore(ctx context.Context) error {
 
 	s.store = r
 
-	defer s.store.ClosePostgres()
+	// defer s.store.ClosePostgres()
 
 	return nil
 }
