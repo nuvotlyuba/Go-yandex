@@ -6,7 +6,7 @@ import (
 )
 
 func (h Handlers) GetConnDBHandler(w http.ResponseWriter, r *http.Request) {
-	//пингануть базу
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
