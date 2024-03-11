@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
@@ -26,6 +27,7 @@ func (r DBRepository) GetURL (shortURL string) (*models.URL, error) {
 }
 
 func (r DBRepository) Ping(ctx context.Context) error {
+	fmt.Println(r.store, "&&&&&&&&&&&&&&&&&&&&&&&7")
 	if err := r.store.db.Ping(ctx); err != nil {
 		return err
 	}
