@@ -115,16 +115,16 @@ func (r *FileRepository) WriteNewURL(data *models.URL) error {
 
 }
 
-func (r *FileRepository) ReadURL(shortenURL string) (*models.URL, error) {
+func (r *FileRepository) ReadURL(shortenURL string) (string, error) {
 	rr, err := NewURLScanner(r.FileStoragePath)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	rr.Split()
 	data, err := rr.ScanURL(shortenURL)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return data, nil
+	return data.OriginalURL, nil
 }

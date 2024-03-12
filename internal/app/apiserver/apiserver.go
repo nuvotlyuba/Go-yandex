@@ -66,6 +66,7 @@ func (s *APIServer) Start(ctx context.Context) error {
 	handler := handler.New(service)
 
 	s.configureRouter(handler)
+
 	server := &http.Server{
 		Addr:         s.config.ServerAddress,
 		WriteTimeout: s.config.WriteTimeout,
@@ -121,8 +122,6 @@ func (s *APIServer) configureDB(ctx context.Context) error {
 	}
 
 	s.db = dbpool
-
-	// defer s.closePostgres()
 
 	return nil
 }

@@ -245,11 +245,11 @@ func TestGetConnDbHandler(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
-			cfg := store.NewConfig()
 
-			newStore := store.New(cfg)
-			s := New(newStore)
-			s.GetConnDBHandler(w, r)
+			// store := store.New(db)
+			// s := service.New(store)
+			// h := New(s)
+			h.GetConnDBHandler(w, r)
 			res := w.Result()
 			res.Body.Close()
 

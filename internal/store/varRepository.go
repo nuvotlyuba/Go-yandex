@@ -16,12 +16,14 @@ func (r *VarRepository) AddNewURL(data *models.URL) error {
 	return nil
 }
 
-func (r *VarRepository) FindURL(shortURL string) (*models.URL, error) {
-	var result *models.URL
+func (r *VarRepository) FindURL(shortURL string) string {
+	var data *models.URL
 	for _, v := range DataURL {
 		if v.ShortURL == shortURL {
-			result = v
+			data = v
+		} else {
+			return ""
 		}
 	}
-	return result, nil
+	return data.OriginalURL
 }

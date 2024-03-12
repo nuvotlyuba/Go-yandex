@@ -4,14 +4,16 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
+	"go.uber.org/zap"
 )
 
 func (s Service) CreateNewURL(longURL string) (*models.URL, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
 	token := utils.GenerateToken(8)
 
 	newURL := models.URL{
@@ -20,24 +22,27 @@ func (s Service) CreateNewURL(longURL string) (*models.URL, error) {
 		OriginalURL: longURL,
 	}
 
-	err := s.dbRepo.CreateNewURL(ctx, &newURL)
-	if err != nil {
-		return &models.URL{}, err
-	}
-
-	//запись в файл
-	if configs.FileStoragePath != "" {
+	storage := utils.SwitchStorage()
+	switch storage {
+	case "db":
+		logger.Info("save URL in", zap.String("", storage))
+		err := s.dbRepo.CreateNewURL(ctx, &newURL)
+		if err != nil {
+			return &models.URL{}, err
+		}
+	case "file":
+		logger.Info("save URL in", zap.String("", storage))
 		err := s.fileRepo.WriteNewURL(&newURL)
+		if err != nil {
+			return &models.URL{}, err
+		}
+	case "mem":
+		logger.Info("save URL in", zap.String("", storage))
+		err := s.varRepo.AddNewURL(&newURL)
 		if err != nil {
 			return &models.URL{}, err
 		}
 	}
 
-	//запись в переменную
-	err = s.varRepo.AddNewURL(&newURL)
-	if err != nil {
-		return &models.URL{}, err
-	}
-
-	return &newURL, err
+	return &newURL, nil
 }

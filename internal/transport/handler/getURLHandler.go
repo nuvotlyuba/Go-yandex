@@ -11,6 +11,7 @@ func (h Handler) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	res, err := h.service.FindURL(id)
+
 	if err != nil {
 		http.Error(w, error.Error(err), http.StatusBadRequest)
 		return
