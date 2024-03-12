@@ -3,8 +3,8 @@ package models
 import "github.com/google/uuid"
 
 type URLItem struct {
-	ID      string `json:"id"`
-	URL     string `json:"Url"`
+	ID  string `json:"id"`
+	URL string `json:"Url"`
 }
 
 type URL struct {
@@ -16,7 +16,7 @@ type URL struct {
 type URLData []URLItem
 
 type RequestBody struct {
-	URL string     `json:"url"`
+	URL string `json:"url"`
 }
 type Response struct {
 	Result string `json:"result"`

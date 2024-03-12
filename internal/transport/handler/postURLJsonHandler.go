@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -6,19 +6,17 @@ import (
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
-	"github.com/nuvotlyuba/Go-yandex/internal/services"
 	"go.uber.org/zap"
 )
 
-func (h Handlers) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.RequestBody
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		logger.Debug("cannot decode request JSON body", zap.Error(err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	service := new(services.Service)
-	data, err := service.CreateNewURL(req.URL)
+	data, err := h.service.CreateNewURL(req.URL)
 	if err != nil {
 		http.Error(w, error.Error(err), http.StatusBadRequest)
 		return
@@ -33,7 +31,7 @@ func (h Handlers) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
 
 	enc := json.NewEncoder(w)
 	if err := enc.Encode(resp); err != nil {
-	logger.Debug("error encoding response", zap.Error(err))
+		logger.Debug("error encoding response", zap.Error(err))
 		return
 	}
 }

@@ -1,23 +1,22 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
-	"github.com/nuvotlyuba/Go-yandex/internal/store"
+	"github.com/nuvotlyuba/Go-yandex/internal/service"
 )
 
-type Handlers struct {
-	store *store.Store
+type Handler struct {
+	service *service.Service
 }
 
-
-func New(store *store.Store) *Handlers {
-	return &Handlers{
-		store: store,
+func New(service *service.Service) *Handler {
+	return &Handler{
+		service: service,
 	}
 }
 
-type Handler interface {
+type Handlers interface {
 	GetURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLHandler(w http.ResponseWriter, r *http.Request)
 	PostURLJsonHandler(w http.ResponseWriter, r *http.Request)

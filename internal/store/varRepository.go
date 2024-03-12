@@ -2,7 +2,7 @@ package store
 
 import "github.com/nuvotlyuba/Go-yandex/internal/models"
 
-type VarRepository struct {}
+type VarRepository struct{}
 
 var DataURL []*models.URL
 
@@ -13,7 +13,7 @@ type VarRepo interface {
 
 func (r *VarRepository) AddNewURL(data *models.URL) error {
 	DataURL = append(DataURL, data)
-	return  nil
+	return nil
 }
 
 func (r *VarRepository) FindURL(shortURL string) (*models.URL, error) {

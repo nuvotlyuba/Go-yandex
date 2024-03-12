@@ -6,8 +6,7 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-
-func (r FileRepository) GetURL(token string)  (*models.URL, error) {
+func (r FileRepository) GetURL(token string) (*models.URL, error) {
 	shortURL := utils.GetShortURL(token)
 	var result *models.URL
 

@@ -5,79 +5,79 @@
 package mock_handlers
 
 import (
-        http "net/http"
-        reflect "reflect"
+	http "net/http"
+	reflect "reflect"
 
-        gomock "github.com/golang/mock/gomock"
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockHandler is a mock of Handler interface.
 type MockHandler struct {
-        ctrl     *gomock.Controller
-        recorder *MockHandlerMockRecorder
+	ctrl     *gomock.Controller
+	recorder *MockHandlerMockRecorder
 }
 
 // MockHandlerMockRecorder is the mock recorder for MockHandler.
 type MockHandlerMockRecorder struct {
-        mock *MockHandler
+	mock *MockHandler
 }
 
 // NewMockHandler creates a new mock instance.
 func NewMockHandler(ctrl *gomock.Controller) *MockHandler {
-        mock := &MockHandler{ctrl: ctrl}
-        mock.recorder = &MockHandlerMockRecorder{mock}
-        return mock
+	mock := &MockHandler{ctrl: ctrl}
+	mock.recorder = &MockHandlerMockRecorder{mock}
+	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockHandler) EXPECT() *MockHandlerMockRecorder {
-        return m.recorder
+	return m.recorder
 }
 
 // GetConnDBHandler mocks base method.
 func (m *MockHandler) GetConnDBHandler(w http.ResponseWriter, r *http.Request) {
-        m.ctrl.T.Helper()
-        m.ctrl.Call(m, "GetConnDBHandler", w, r)
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "GetConnDBHandler", w, r)
 }
 
 // GetConnDBHandler indicates an expected call of GetConnDBHandler.
 func (mr *MockHandlerMockRecorder) GetConnDBHandler(w, r interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConnDBHandler", reflect.TypeOf((*MockHandler)(nil).GetConnDBHandler), w, r)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConnDBHandler", reflect.TypeOf((*MockHandler)(nil).GetConnDBHandler), w, r)
 }
 
 // GetURLHandler mocks base method.
 func (m *MockHandler) GetURLHandler(w http.ResponseWriter, r *http.Request) {
-        m.ctrl.T.Helper()
-        m.ctrl.Call(m, "GetURLHandler", w, r)
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "GetURLHandler", w, r)
 }
 
 // GetURLHandler indicates an expected call of GetURLHandler.
 func (mr *MockHandlerMockRecorder) GetURLHandler(w, r interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetURLHandler", reflect.TypeOf((*MockHandler)(nil).GetURLHandler), w, r)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetURLHandler", reflect.TypeOf((*MockHandler)(nil).GetURLHandler), w, r)
 }
 
 // PostURLHandler mocks base method.
 func (m *MockHandler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
-        m.ctrl.T.Helper()
-        m.ctrl.Call(m, "PostURLHandler", w, r)
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "PostURLHandler", w, r)
 }
 
 // PostURLHandler indicates an expected call of PostURLHandler.
 func (mr *MockHandlerMockRecorder) PostURLHandler(w, r interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostURLHandler", reflect.TypeOf((*MockHandler)(nil).PostURLHandler), w, r)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostURLHandler", reflect.TypeOf((*MockHandler)(nil).PostURLHandler), w, r)
 }
 
 // PostURLJsonHandler mocks base method.
 func (m *MockHandler) PostURLJsonHandler(w http.ResponseWriter, r *http.Request) {
-        m.ctrl.T.Helper()
-        m.ctrl.Call(m, "PostURLJsonHandler", w, r)
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "PostURLJsonHandler", w, r)
 }
 
 // PostURLJsonHandler indicates an expected call of PostURLJsonHandler.
 func (mr *MockHandlerMockRecorder) PostURLJsonHandler(w, r interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostURLJsonHandler", reflect.TypeOf((*MockHandler)(nil).PostURLJsonHandler), w, r)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostURLJsonHandler", reflect.TypeOf((*MockHandler)(nil).PostURLJsonHandler), w, r)
 }

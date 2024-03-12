@@ -1,53 +1,22 @@
 package store
 
 import (
-	"context"
-	"fmt"
-	"time"
-
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/nuvotlyuba/Go-yandex/configs"
 )
 
-
-type Store struct{
-	config             *Config
-	db                 *pgxpool.Pool
-	dbRepository       *DBRepository
-	fileRepository     *FileRepository
-	varRepository      *VarRepository
+type Store struct {
+	db             *pgxpool.Pool
+	dbRepository   *DBRepository
+	fileRepository *FileRepository
+	varRepository  *VarRepository
 }
 
-func New(config *Config) *Store {
+func New(db *pgxpool.Pool) *Store {
 	return &Store{
-		config: config,
+		db: db,
 	}
 }
-
-func (s *Store) OpenPostgres(ctx context.Context, dataBaseDSN string) error {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-	fmt.Println("$$$$$$$$$$$$$")
-	fmt.Println(s.config.DataBaseDSN, "s.config.DataBaseDSN")
-
-	dbpool, err := pgxpool.New(ctx, s.config.DataBaseDSN)
-	if err != nil {
-		return err
-	}
-
-	if err := dbpool.Ping(ctx); err != nil {
-		return err
-	}
-
-	s.db = dbpool
-	fmt.Println(s.db,  "s.db", dbpool, "dfugbju")
-
-	return nil
-}
-
-func (s *Store) ClosePostgres() {
-	s.db.Close()
-}
-
 
 func (s *Store) DBRepo() *DBRepository {
 	if s.dbRepository != nil {
@@ -61,20 +30,18 @@ func (s *Store) DBRepo() *DBRepository {
 	return s.dbRepository
 }
 
-
 func (s *Store) FileRepo() *FileRepository {
 	if s.fileRepository != nil {
 		return s.fileRepository
 	}
 
 	s.fileRepository = &FileRepository{
-		FileStoragePath: s.config.FileStoragePath,
+		FileStoragePath: configs.FileStoragePath,
 	}
 
 	return s.fileRepository
 
 }
-
 
 func (s *Store) VarRepo() *VarRepository {
 	if s.varRepository != nil {

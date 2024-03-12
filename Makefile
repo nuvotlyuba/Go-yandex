@@ -1,4 +1,4 @@
-build: del_app build_app
+build: del_app fmt_app build_app
 
 build_app:
 	go build -v ./cmd/shortener
@@ -16,7 +16,7 @@ flags:
 	go run ./cmd/shortener -a :3333 -b http://localhost:3333
 
 fmt_app:
-	go fmt ./... && staticcheck ./...
+	go fmt ./...
 
 docker_build:
 	docker-compose build

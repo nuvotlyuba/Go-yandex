@@ -5,10 +5,11 @@ import (
 
 	"go.uber.org/zap"
 )
+
 type (
 	responseData struct {
 		status int
-		size int
+		size   int
 	}
 
 	loggingResponseWriter struct {
@@ -19,7 +20,7 @@ type (
 
 func (r *loggingResponseWriter) Write(b []byte) (int, error) {
 	size, err := r.ResponseWriter.Write(b)
-	r.responseData.size +=size
+	r.responseData.size += size
 	return size, err
 }
 
@@ -28,11 +29,8 @@ func (r *loggingResponseWriter) WriteHeader(statusCode int) {
 	r.responseData.status = statusCode
 }
 
-func Info(msg string, field ...interface{})   {zap.S().Infow(msg, field...)}
+func Info(msg string, field ...interface{}) { zap.S().Infow(msg, field...) }
 
-func Debug(msg string, fields ...interface{}) {zap.S().Debugw(msg, fields...)}
+func Debug(msg string, fields ...interface{}) { zap.S().Debugw(msg, fields...) }
 
-func Fatal(msg string, fields ...interface{}) {zap.S().Fatalw(msg, fields...)}
-
-
-
+func Fatal(msg string, fields ...interface{}) { zap.S().Fatalw(msg, fields...) }

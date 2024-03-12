@@ -5,16 +5,18 @@ import (
 
 	"github.com/caarlos0/env/v10"
 )
+
 type Stage string
+
 const (
 	Development Stage = "development"
-	Production Stage  =  "production"
+	Production  Stage = "production"
 )
 
-var BaseURL         = "http://localhost:8080"
-var ServerAddress   = ":8080"
+var BaseURL = "http://localhost:8080"
+var ServerAddress = ":8080"
 var FileStoragePath = ""
-var DataBaseDSN     = "postgres://postgres:user@0.0.0.0:5432/shortener"
+var DataBaseDSN = "postgres://postgres:user@localhost:5432/shortener"
 
 type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`

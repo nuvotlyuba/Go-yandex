@@ -5,9 +5,8 @@ import (
 	"strings"
 )
 
-
-func GzipMiddleware(next http.Handler) http.Handler{
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request){
+func GzipMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ow := w
 
 		acceptEncoding := r.Header.Get("Accept-Encoding")
@@ -38,4 +37,3 @@ func GzipMiddleware(next http.Handler) http.Handler{
 		next.ServeHTTP(ow, r)
 	})
 }
-

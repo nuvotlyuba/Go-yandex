@@ -1,13 +1,11 @@
-package handlers
+package handler
 
 import (
 	"io"
 	"net/http"
-
-	"github.com/nuvotlyuba/Go-yandex/internal/services"
 )
 
-func (h Handlers) PostURLHandler(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	responseData, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
@@ -16,8 +14,7 @@ func (h Handlers) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	responseString := string(responseData)
 
-	ss := new(services.Service)
-	data, err := ss.CreateNewURL(responseString)
+	data, err := h.service.CreateNewURL(responseString)
 	if err != nil {
 		http.Error(w, "Не удалось получить короткую ссылку", http.StatusBadRequest)
 		return

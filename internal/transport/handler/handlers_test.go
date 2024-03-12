@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nuvotlyuba/Go-yandex/internal/services"
+	"github.com/nuvotlyuba/Go-yandex/internal/service"
 	"github.com/nuvotlyuba/Go-yandex/internal/store"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -79,7 +79,7 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 func TestGetUrlHandler(t *testing.T) {
 
 	url := "https://yandex.ru"
-	s := new(services.Service)
+	s := new(service.Service)
 	data, _ := s.CreateNewURL(url)
 	successRequest := "/" + strings.Split(data.ShortURL, "/")[3]
 	fmt.Println(successRequest, "!!!!!!!!!!!!")
@@ -133,19 +133,18 @@ func TestPostURLJsonHandler(t *testing.T) {
 
 	successBody := `{ "url": "https://yandex.ru" }`
 
-
 	testCases := []struct {
-		name         		string
-		request      		string
-		body         		string
-		contentType  		string
-		expectedCode 		int
+		name                string
+		request             string
+		body                string
+		contentType         string
+		expectedCode        int
 		expectedContentType string
 	}{
 		{
-			name:        		 "Success.Status code 201",
-			request:     		 "/api/shorten",
-			contentType: 		 "application/json",
+			name:                "Success.Status code 201",
+			request:             "/api/shorten",
+			contentType:         "application/json",
 			body:                successBody,
 			expectedContentType: "application/json",
 			expectedCode:        201,
@@ -174,20 +173,20 @@ func TestPostURLJsonHandler(t *testing.T) {
 	}
 }
 
-func TestGzipCompression( t *testing.T) {
+func TestGzipCompression(t *testing.T) {
 
 	testCases := []struct {
-		name         		string
-		request      		string
-		body         		string
-		contentType  		string
-		expectedCode 		int
+		name                string
+		request             string
+		body                string
+		contentType         string
+		expectedCode        int
 		expectedContentType string
 	}{
 		{
-			name:        		 "Send gzip.Success.Status code 201.URL:/",
-			request:     		 "/",
-			contentType: 		 "text/plain; charset=utf-8",
+			name:                "Send gzip.Success.Status code 201.URL:/",
+			request:             "/",
+			contentType:         "text/plain; charset=utf-8",
 			body:                "https://yandex.ru",
 			expectedContentType: "text/plain",
 			expectedCode:        201,
@@ -195,7 +194,7 @@ func TestGzipCompression( t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		t.Run(tt.name, func(t *testing.T){
+		t.Run(tt.name, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
 			zb := gzip.NewWriter(buf)
 			_, err := zb.Write([]byte(tt.body))
@@ -212,7 +211,7 @@ func TestGzipCompression( t *testing.T) {
 			s := New(newStore)
 			var res *http.Response
 			if tt.contentType == "text/plain; charset=utf-8" {
-				s.PostURLHandler(w,r)
+				s.PostURLHandler(w, r)
 				res = w.Result()
 			}
 			assert.Equal(t, tt.expectedContentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.expectedContentType)
@@ -228,19 +227,19 @@ func TestGzipCompression( t *testing.T) {
 
 func TestGetConnDbHandler(t *testing.T) {
 	type want struct {
-		statusCode  int
+		statusCode int
 	}
 
 	tests := []struct {
-		name        string
-		request     string
-		want        want
+		name    string
+		request string
+		want    want
 	}{
 		{
-			name:        "Success.Status code 201",
-			request:     "/ping",
+			name:    "Success.Status code 201",
+			request: "/ping",
 			want: want{
-				statusCode:  200,
+				statusCode: 200,
 			},
 		},
 	}
@@ -250,7 +249,7 @@ func TestGetConnDbHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
 			cfg := store.NewConfig()
-			fmt.Println(cfg, "cfg")
+
 			newStore := store.New(cfg)
 			s := New(newStore)
 			s.GetConnDBHandler(w, r)

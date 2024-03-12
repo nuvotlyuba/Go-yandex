@@ -1,28 +1,26 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/nuvotlyuba/Go-yandex/internal/services"
 )
 
-func (h Handlers) GetURLHandler(w http.ResponseWriter, r *http.Request) {
+func (h Handler) GetURLHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 
-	service := new(services.Service)
-	data, err := service.FindURL(id)
+	res, err := h.service.FindURL(id)
 	if err != nil {
 		http.Error(w, error.Error(err), http.StatusBadRequest)
 		return
 	}
 
-	if data == nil {
+	if res == "" {
 		http.Error(w, "Ссылка по ID не найдена", http.StatusBadRequest)
 		return
 	}
 
-	w.Header().Set("Location", data.OriginalURL)
+	w.Header().Set("Location", res)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }

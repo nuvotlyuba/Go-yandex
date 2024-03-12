@@ -23,6 +23,6 @@ func GetShortURL(id string) string {
 func GetDirsFromPath(path string) string {
 	sl := strings.Split(path, "/")
 	sl = sl[:len(sl)-1]
-    st := strings.Join(sl, "/")
+	st := strings.Join(sl, "/")
 	return st
 }

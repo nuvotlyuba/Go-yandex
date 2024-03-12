@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"context"
@@ -7,21 +7,22 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/store"
 )
 
-type Service struct{
+type Service struct {
 	dbRepo   *store.DBRepository
 	fileRepo *store.FileRepository
+	varRepo  *store.VarRepository
 }
 
-
-type IService interface {
-	CreateNewURL(longURL string) (*models.URL, error )
+type Serv interface {
+	CreateNewURL(longURL string) (*models.URL, error)
 	FindURL(token string) (*models.URL, error)
 	PingDB(ctx context.Context) error
 }
 
 func New(store *store.Store) *Service {
 	return &Service{
-		dbRepo: store.DBRepo(),
+		dbRepo:   store.DBRepo(),
 		fileRepo: store.FileRepo(),
+		varRepo:  store.VarRepo(),
 	}
 }

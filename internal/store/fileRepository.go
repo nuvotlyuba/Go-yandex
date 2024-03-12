@@ -10,7 +10,7 @@ import (
 )
 
 type URLRecorder struct {
-	file  *os.File
+	file   *os.File
 	writer *bufio.Writer
 }
 
@@ -25,7 +25,6 @@ func NewURLRecorder(filename string) (*URLRecorder, error) {
 		writer: bufio.NewWriter(file),
 	}, nil
 }
-
 
 func (w *URLRecorder) Close() error {
 	return w.file.Close()
@@ -50,7 +49,7 @@ func (w *URLRecorder) WriteURL(url *models.URL) error {
 
 type URLScanner struct {
 	file    *os.File
-	scanner  *bufio.Scanner
+	scanner *bufio.Scanner
 }
 
 func NewURLScanner(filename string) (*URLScanner, error) {
@@ -60,7 +59,7 @@ func NewURLScanner(filename string) (*URLScanner, error) {
 	}
 
 	return &URLScanner{
-		file:   file,
+		file:    file,
 		scanner: bufio.NewScanner(file),
 	}, nil
 }
@@ -68,7 +67,6 @@ func NewURLScanner(filename string) (*URLScanner, error) {
 func (s *URLScanner) Split() {
 	s.scanner.Split(bufio.ScanLines)
 }
-
 
 func (s *URLScanner) ScanURL(shortenURL string) (*models.URL, error) {
 	url := models.URL{}

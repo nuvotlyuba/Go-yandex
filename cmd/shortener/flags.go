@@ -8,10 +8,10 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 )
 
-var serverAddress   string
-var baseURL         string
+var serverAddress string
+var baseURL string
 var fileStoragePath string
-var dataBaseDSN     string
+var dataBaseDSN string
 
 func parseFlags() {
 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
@@ -19,7 +19,6 @@ func parseFlags() {
 	flag.StringVar(&fileStoragePath, "f", "", "Full file name, for saving JSON data")
 	flag.StringVar(&dataBaseDSN, "d", "", "Data sourse name for postgresDB")
 	flag.Parse()
-
 
 	//serverAddress
 	if serverAddress != "" {
@@ -43,7 +42,7 @@ func parseFlags() {
 	//создаем папку
 	envFileStoragePath := os.Getenv("FILE_STORAGE_PATH")
 	if envFileStoragePath != "" {
-		configs.FileStoragePath  = envFileStoragePath
+		configs.FileStoragePath = envFileStoragePath
 		os.MkdirAll(utils.GetDirsFromPath(configs.FileStoragePath), 0777)
 
 	}
