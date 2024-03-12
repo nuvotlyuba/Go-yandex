@@ -42,7 +42,7 @@ func LoadConfig() *Config {
 
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
-		log.Fatal("unable to parse environment variables: %v", err)
+		log.Fatalf("unable to parse environment variables: %v", err)
 	}
 
 	return &cfg
