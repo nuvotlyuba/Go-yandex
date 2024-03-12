@@ -47,8 +47,7 @@ func TestPostUrlHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
 			r.Header.Set("Content-Type", tt.contentType)
-			cfg := store.NewConfig()
-			newStore := store.New(cfg)
+
 			s := New(newStore)
 			s.PostURLHandler(w, r)
 			res := w.Result()
@@ -156,9 +155,7 @@ func TestPostURLJsonHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.body))
 			r.Header.Set("Content-Type", tt.contentType)
-			cfg := store.NewConfig()
-			newStore := store.New(cfg)
-			s := New(newStore)
+
 			s.PostURLJsonHandler(w, r)
 			res := w.Result()
 
@@ -254,6 +251,7 @@ func TestGetConnDbHandler(t *testing.T) {
 			s := New(newStore)
 			s.GetConnDBHandler(w, r)
 			res := w.Result()
+			res.Body.Close()
 
 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 

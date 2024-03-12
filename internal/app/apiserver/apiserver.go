@@ -29,13 +29,20 @@ type APIServer struct {
 func New(config *APIConfig) *APIServer {
 	return &APIServer{
 		config: config,
-		logger: zap.New(nil),
 		router: chi.NewRouter(),
 	}
 }
 
+type Server interface {
+	Start(ctx context.Context) error
+	configureLogger() error
+	configureDB(ctx context.Context) error
+	closePostgres()
+	configureRouter() *chi.Mux
+}
+
 func (s *APIServer) Start(ctx context.Context) error {
-	if err := s.configureLogger(s.config.LogLevel, s.config.AppEnv); err != nil {
+	if err := s.configureLogger(); err != nil {
 		s.logger.Fatal("Don't initialize logger")
 	}
 	s.logger.Info("Server running ...", zap.String("address", s.config.ServerAddress))
@@ -50,18 +57,20 @@ func (s *APIServer) Start(ctx context.Context) error {
 	if err := s.configureDB(ctx); err != nil {
 		s.logger.Fatal("Unable to create connection pool.", zap.Error(err))
 	}
+	defer s.closePostgres()
+
 	s.logger.Info("Successfully connected to postgreSQL pool.")
 
 	store := store.New(s.db)
 	service := service.New(store)
 	handler := handler.New(service)
 
-	router := s.configureRouter(handler)
+	s.configureRouter(handler)
 	server := &http.Server{
 		Addr:         s.config.ServerAddress,
 		WriteTimeout: s.config.WriteTimeout,
 		ReadTimeout:  s.config.ReadTimeout,
-		Handler:      router,
+		Handler:      s.router,
 	}
 
 	err := server.ListenAndServe()
@@ -72,14 +81,14 @@ func (s *APIServer) Start(ctx context.Context) error {
 	return nil
 }
 
-func (s *APIServer) configureLogger(level string, appEnv string) error {
+func (s *APIServer) configureLogger() error {
 
-	lvl, err := zap.ParseAtomicLevel(level)
+	lvl, err := zap.ParseAtomicLevel(s.config.LogLevel)
 	if err != nil {
 		return err
 	}
 	var cfg zap.Config
-	if configs.Stage(appEnv) == configs.Production {
+	if configs.Stage(s.config.AppEnv) == configs.Production {
 		cfg = zap.NewProductionConfig()
 	} else {
 		cfg = zap.NewDevelopmentConfig()
@@ -113,10 +122,12 @@ func (s *APIServer) configureDB(ctx context.Context) error {
 
 	s.db = dbpool
 
+	// defer s.closePostgres()
+
 	return nil
 }
 
-func (s *APIServer) ClosePostgres() {
+func (s *APIServer) closePostgres() {
 	s.db.Close()
 }
 

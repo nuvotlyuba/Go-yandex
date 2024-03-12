@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
-	"github.com/nuvotlyuba/Go-yandex/internal/store"
 )
 
 type APIConfig struct {
@@ -13,7 +12,6 @@ type APIConfig struct {
 	ReadTimeout     time.Duration
 	LogLevel        string
 	AppEnv          string
-	Store           *store.Config
 	DataBaseDSN     string
 	FileStorageName string
 }
@@ -25,7 +23,6 @@ func NewConfig(cfg *configs.Config) *APIConfig {
 		ReadTimeout:     time.Second * time.Duration(cfg.ReadTimeout),
 		LogLevel:        cfg.LogLevel,
 		AppEnv:          cfg.AppEnv,
-		Store:           store.NewConfig(),
 		DataBaseDSN:     configs.DataBaseDSN,
 		FileStorageName: configs.FileStoragePath,
 	}

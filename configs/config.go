@@ -34,17 +34,15 @@ type Config struct {
 }
 
 func LoadConfig() *Config {
-	// curDir, err := os.Getwd()
-	// if err != nil {
-	// 	log.Println(err)
-	// }
+	// curDir, _ := os.Getwd()
+
 	// if err := godotenv.Load(curDir + "/.env"); err != nil {
-	// 	log.Fatal("unable to load .env file: ", err)
+	// 	log.Printf("unable to load .env file: %v", err)
 	// }
 
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
-		log.Fatal("unable to parse environment variables: ", err)
+		log.Fatal("unable to parse environment variables: %v", err)
 	}
 
 	return &cfg

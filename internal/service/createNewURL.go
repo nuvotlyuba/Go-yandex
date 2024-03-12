@@ -27,7 +27,7 @@ func (s Service) CreateNewURL(longURL string) (*models.URL, error) {
 
 	//запись в файл
 	if configs.FileStoragePath != "" {
-		err := s.fileRepo.InsertNewURL(&newURL)
+		err := s.fileRepo.WriteNewURL(&newURL)
 		if err != nil {
 			return &models.URL{}, err
 		}
