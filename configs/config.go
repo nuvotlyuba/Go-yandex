@@ -16,7 +16,7 @@ const (
 var BaseURL = "http://localhost:8080"
 var ServerAddress = ":8080"
 var FileStoragePath = ""
-var DataBaseDSN = "postgres://postgres:postgres@postgres:5432/praktikum?ssl=disable"
+var DataBaseDSN = "postgres://postgres:postgres@postgres:5432/praktikum"
 
 type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
@@ -30,7 +30,7 @@ type Config struct {
 	DBUser          string `env:"DB_USER"            envDefault:"user"`
 	DBPassword      string `env:"DB_PASSWORD"        envDefault:"password"`
 	DBHost          string `env:"DB_HOST"            envDefault:"db"`
-	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://postgres:postgres@postgres:5432/praktikum?ssl=disable"`
+	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://postgres:postgres@postgres:5432/praktikum"`
 }
 
 func LoadConfig() *Config {
