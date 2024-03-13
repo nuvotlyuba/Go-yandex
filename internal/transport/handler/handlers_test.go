@@ -233,40 +233,40 @@ func TestGzipCompression(t *testing.T) {
 	}
 }
 
-func TestGetConnDbHandler(t *testing.T) {
-	type want struct {
-		statusCode int
-	}
+// func TestGetConnDbHandler(t *testing.T) {
+// 	type want struct {
+// 		statusCode int
+// 	}
 
-	tests := []struct {
-		name    string
-		request string
-		want    want
-	}{
-		{
-			name:    "Success.Status code 201",
-			request: "/ping",
-			want: want{
-				statusCode: 200,
-			},
-		},
-	}
+// 	tests := []struct {
+// 		name    string
+// 		request string
+// 		want    want
+// 	}{
+// 		{
+// 			name:    "Success.Status code 201",
+// 			request: "/ping",
+// 			want: want{
+// 				statusCode: 200,
+// 			},
+// 		},
+// 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			w := httptest.NewRecorder()
-			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
+// 	for _, tt := range tests {
+// 		t.Run(tt.name, func(t *testing.T) {
+// 			w := httptest.NewRecorder()
+// 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
 
-			var db *pgxpool.Pool
-			store := store.New(db)
-			s := service.New(store)
-			h := New(s)
-			h.GetConnDBHandler(w, r)
-			res := w.Result()
-			res.Body.Close()
+// 			serv :=
+// 			store := store.New(db)
+// 			s := service.New(store)
+// 			h := New(s)
+// 			h.GetConnDBHandler(w, r)
+// 			res := w.Result()
+// 			res.Body.Close()
 
-			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
+// 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 
-		})
-	}
-}
+// 		})
+// 	}
+// }

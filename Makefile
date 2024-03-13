@@ -39,3 +39,6 @@ migrate_down:
 
 migrate_create:
 	migrate create -ext sql -dir migrations create_shortener
+
+mockgen:
+	mockgen -destination=mocks/mock_store.go -package=mocks project/apiserver Server

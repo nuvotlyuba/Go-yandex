@@ -138,12 +138,12 @@ func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
 	s.router.Post("/api/shorten", h.PostURLJsonHandler)
 	s.router.Get("/ping", h.GetConnDBHandler)
 
-	WalkRout(s.router)
+	walkRout(s.router)
 
 	return s.router
 }
 
-func WalkRout(r *chi.Mux) {
+func walkRout(r *chi.Mux) {
 	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		route = strings.Replace(route, "/*/", "/", -1)
 		logger.Info(fmt.Sprintf("%s %s\n", method, route))
