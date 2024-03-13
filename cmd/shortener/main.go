@@ -13,7 +13,7 @@ func main() {
 	config := configs.LoadConfig()
 
 	//флаги
-	parseFlags()
+	parseFlags(config)
 
 	//конфигурируем сервер
 	ctx, cancel := context.WithCancel(context.Background())

@@ -13,7 +13,7 @@ var baseURL string
 var fileStoragePath string
 var dataBaseDSN string
 
-func parseFlags() {
+func parseFlags(cfg *configs.Config) {
 	flag.StringVar(&serverAddress, "a", "", "Server address host:port")
 	flag.StringVar(&baseURL, "b", "", "Base URL host:port")
 	flag.StringVar(&fileStoragePath, "f", "", "Full file name, for saving JSON data")
@@ -28,6 +28,11 @@ func parseFlags() {
 	if serverAddress == "" && envServerAddress != "" {
 		configs.ServerAddress = envServerAddress
 	}
+	//нет флага, нет переменной окружения -> пишем по-умолчанию
+	if serverAddress == "" && envServerAddress == "" {
+		configs.ServerAddress = cfg.ServerAddress
+	}
+
 
 	//baseURL
 	if baseURL != "" {
@@ -37,6 +42,10 @@ func parseFlags() {
 	if baseURL == "" && envBaseURL != "" {
 		configs.BaseURL = envBaseURL
 	}
+	//нет флага, нет переменной окружения -> пишем по-умолчанию
+	if baseURL == "" && envBaseURL == "" {
+		configs.BaseURL = cfg.BaseURL
+	}
 
 	//fileStoragePath
 	//создаем папку
@@ -44,7 +53,6 @@ func parseFlags() {
 	if envFileStoragePath != "" {
 		configs.FileStoragePath = envFileStoragePath
 		os.MkdirAll(utils.GetDirsFromPath(configs.FileStoragePath), 0777)
-
 	}
 
 	//создаем папку из флага
@@ -59,6 +67,7 @@ func parseFlags() {
 		configs.FileStoragePath = fileStoragePath
 	}
 
+
 	//dataBaseDSN
 	if dataBaseDSN != "" {
 		configs.DataBaseDSN = dataBaseDSN
@@ -66,5 +75,8 @@ func parseFlags() {
 	envDataBaseDSN := os.Getenv("DATABASE_DSN")
 	if envDataBaseDSN != "" {
 		configs.DataBaseDSN = envDataBaseDSN
+	}
+	if  dataBaseDSN == "" && envDataBaseDSN == "" {
+		configs.DataBaseDSN = cfg.DataBaseDSN
 	}
 }

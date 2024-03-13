@@ -18,7 +18,7 @@ type APIConfig struct {
 
 func NewConfig(cfg *configs.Config) *APIConfig {
 	return &APIConfig{
-		ServerAddress:   configs.ServerAddress,
+		ServerAddress:   configs.ServerAddress ,
 		WriteTimeout:    time.Second * time.Duration(cfg.WriteTimeout),
 		ReadTimeout:     time.Second * time.Duration(cfg.ReadTimeout),
 		LogLevel:        cfg.LogLevel,
