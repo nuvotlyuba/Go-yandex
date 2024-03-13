@@ -151,7 +151,7 @@ func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
 }
 
 func (s *APIServer) createTables(ctx context.Context) error {
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
 	tx, err := s.db.Begin(ctx)
@@ -166,7 +166,7 @@ func (s *APIServer) createTables(ctx context.Context) error {
 			"created"      timestamp(0) NOT NULL,
 			CONSTRAINT "shorter.id" PRIMARY KEY ("id")
 		);
-		CREATE INDEX short_url_index ON public.shortener (short_url);
+		CREATE INDEX IF NOT EXISTS short_url_index ON public.shortener (short_url);
 	`)
 	if err != nil {
 		tx.Rollback(ctx)
