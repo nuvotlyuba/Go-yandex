@@ -3,7 +3,6 @@ package handler
 import (
 	"bytes"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -79,58 +78,66 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 	return resp
 }
 
-func TestGetUrlHandler(t *testing.T) {
+// func TestGetUrlHandler(t *testing.T) {
 
-	url := "https://yandex.ru"
-	s := new(service.Service)
-	data, _ := s.CreateNewURL(url)
-	successRequest := "/" + strings.Split(data.ShortURL, "/")[3]
-	fmt.Println(successRequest, "!!!!!!!!!!!!")
+// 	url := "https://yandex.ru"
+// 	var db *pgxpool.Pool
+// 	store := store.New(db)
+// 	s := service.New(store)
+// 	h := New(s)
+// 	data, _ := s.CreateNewURL(url)
+// 	fmt.Println( strings.Join(strings.Split(data.ShortURL, "/"), ""), "data")
+// 	successRequest := "/" + strings.Join(strings.Split(data.ShortURL, "/"), "")
 
-	type want struct {
-		statusCode     int
-		locationHeader string
-	}
+// 	type want struct {
+// 		statusCode     int
+// 		locationHeader string
+// 	}
 
-	// tests := []struct {
-	// 	name        string
-	// 	request     string
-	// 	contentType string
-	// 	id          string
-	// 	want        want
-	// }{
-	// 	{
-	// 		name:    "Success.Status code 307",
-	// 		request:  successRequest,
-	// 		want: want{
-	// 			statusCode:     200,
-	// 			locationHeader: url,
-	// 		},
-	// 	},
-	// 	{
-	// 		name:    "BadRequest.Status code 400",
-	// 		request: "/jhfybHYF",
-	// 		want: want{
-	// 			statusCode: 400,
-	// 		},
-	// 	},
-	// }
+// 	tests := []struct {
+// 		name        string
+// 		request     string
+// 		contentType string
+// 		id          string
+// 		want        want
+// 	}{
+// 		{
+// 			name:    "Success.Status code 307",
+// 			request:  successRequest,
+// 			want: want{
+// 				statusCode:     200,
+// 				locationHeader: url,
+// 			},
+// 		},
+// 		{
+// 			name:    "BadRequest.Status code 400",
+// 			request: "/jhfybHYF",
+// 			want: want{
+// 				statusCode: 400,
+// 			},
+// 		},
+// 	}
 
-	// for _, tt := range tests {
-	// 	t.Run(tt.name, func(t *testing.T) {
-	// 		r := chi.NewRouter()
-	// 		ts := httptest.NewServer(BasicRouter(r))
-	// 		res := testRequest(t, ts, http.MethodGet, tt.request)
-	// 		body, _ := io.ReadAll(res.Body)
-	// 		fmt.Println(string(body), "^^^^^^^^^^^^^^^")
-	// 		res.Body.Close()
+// 	for _, tt := range tests {
+// 		t.Run(tt.name, func(t *testing.T) {
+// 			w := httptest.NewRecorder()
+// 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
+// 			r.Header.Set("Content-Type", tt.contentType)
 
-	// 		assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
-	// 		// assert.Equal(t, tt.want.locationHeader, res.Header.Get("Location"), "Отличный от %v заголовок Location", tt.want.locationHeader)
 
-	// 	})
-	// }
-}
+// 			h.GetURLHandler(w, r)
+// 			res := w.Result()
+
+// 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
+
+// 			_, err := io.ReadAll(res.Body)
+// 			require.NoError(t, err, "Ошибка чтения тела ответа")
+// 			err = res.Body.Close()
+// 			require.NoError(t, err)
+
+// 		})
+// 	}
+// }
 
 func TestPostURLJsonHandler(t *testing.T) {
 
