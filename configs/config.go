@@ -32,7 +32,7 @@ type Config struct {
 	DBUser          string `env:"DB_USER"            envDefault:"user"`
 	DBPassword      string `env:"DB_PASSWORD"        envDefault:"password"`
 	DBHost          string `env:"DB_HOST"            envDefault:"db"`
-	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://postgres:user@localhost:5432/shortener"`
+	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://postgres:postgres@postgres:5432/praktikum"`
 }
 
 func LoadConfig() *Config {
