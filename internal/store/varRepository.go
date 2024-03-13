@@ -4,7 +4,9 @@ import (
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
-type VarRepository struct{}
+type MemRepository struct {
+	data []*models.URL
+}
 
 var DataURL []*models.URL
 
@@ -13,14 +15,14 @@ type VarRepo interface {
 	FindURL(shortURL string) (*models.URL, error)
 }
 
-func (r *VarRepository) AddNewURL(data *models.URL) error {
-	DataURL = append(DataURL, data)
+func (r *MemRepository) AddNewURL(data *models.URL) error {
+	r.data = append(r.data, data)
 	return nil
 }
 
-func (r *VarRepository) FindURL(shortURL string) string {
+func (r *MemRepository) FindURL(shortURL string) string {
 	var data *models.URL
-	for _, v := range DataURL {
+	for _, v := range r.data {
 		if v.ShortURL == shortURL {
 			data = v
 		}

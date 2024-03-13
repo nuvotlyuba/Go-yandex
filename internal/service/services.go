@@ -10,7 +10,7 @@ import (
 type Service struct {
 	dbRepo   *store.DBRepository
 	fileRepo *store.FileRepository
-	varRepo  *store.VarRepository
+	varRepo  *store.MemRepository
 }
 
 type Serv interface {
@@ -23,6 +23,6 @@ func New(store *store.Store) *Service {
 	return &Service{
 		dbRepo:   store.DBRepo(),
 		fileRepo: store.FileRepo(),
-		varRepo:  store.VarRepo(),
+		varRepo:  store.MemRepo(),
 	}
 }

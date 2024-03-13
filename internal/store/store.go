@@ -9,7 +9,7 @@ type Store struct {
 	db             *pgxpool.Pool
 	dbRepository   *DBRepository
 	fileRepository *FileRepository
-	varRepository  *VarRepository
+	memRepository  *MemRepository
 }
 
 func New(db *pgxpool.Pool) *Store {
@@ -43,12 +43,14 @@ func (s *Store) FileRepo() *FileRepository {
 
 }
 
-func (s *Store) VarRepo() *VarRepository {
-	if s.varRepository != nil {
-		return s.varRepository
+func (s *Store) MemRepo() *MemRepository {
+	if s.memRepository != nil {
+		return s.memRepository
 	}
 
-	s.varRepository = &VarRepository{}
+	s.memRepository = &MemRepository{
+		data: DataURL,
+	}
 
-	return s.varRepository
+	return s.memRepository
 }
