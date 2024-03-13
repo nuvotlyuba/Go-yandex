@@ -16,7 +16,7 @@ const (
 var BaseURL = "http://localhost:8080"
 var ServerAddress = ":8080"
 var FileStoragePath = ""
-var DataBaseDSN = "postgres://postgres:user@localhost:5432/shortener"
+var DataBaseDSN = "postgres://postgres:user@postgres:5432/shortener"
 
 type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
