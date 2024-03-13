@@ -25,19 +25,19 @@ func (s Service) CreateNewURL(longURL string) (*models.URL, error) {
 	storage := utils.SwitchStorage()
 	switch storage {
 	case "db":
-		logger.Info("save URL in", zap.String("", storage))
+		logger.Info("save URL in", zap.String("storage", storage))
 		err := s.dbRepo.CreateNewURL(ctx, &newURL)
 		if err != nil {
 			return &models.URL{}, err
 		}
 	case "file":
-		logger.Info("save URL in", zap.String("", storage))
+		logger.Info("save URL in", zap.String("storage", storage))
 		err := s.fileRepo.WriteNewURL(&newURL)
 		if err != nil {
 			return &models.URL{}, err
 		}
 	case "mem":
-		logger.Info("save URL in", zap.String("", storage))
+		logger.Info("save URL in", zap.String("storage", storage))
 		err := s.varRepo.AddNewURL(&newURL)
 		if err != nil {
 			return &models.URL{}, err

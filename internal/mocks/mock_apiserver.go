@@ -5,100 +5,100 @@
 package mock_apiserver
 
 import (
-        context "context"
-        reflect "reflect"
+	context "context"
+	reflect "reflect"
 
-        chi "github.com/go-chi/chi/v5"
-        gomock "github.com/golang/mock/gomock"
+	chi "github.com/go-chi/chi/v5"
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockServer is a mock of Server interface.
 type MockServer struct {
-        ctrl     *gomock.Controller
-        recorder *MockServerMockRecorder
+	ctrl     *gomock.Controller
+	recorder *MockServerMockRecorder
 }
 
 // MockServerMockRecorder is the mock recorder for MockServer.
 type MockServerMockRecorder struct {
-        mock *MockServer
+	mock *MockServer
 }
 
 // NewMockServer creates a new mock instance.
 func NewMockServer(ctrl *gomock.Controller) *MockServer {
-        mock := &MockServer{ctrl: ctrl}
-        mock.recorder = &MockServerMockRecorder{mock}
-        return mock
+	mock := &MockServer{ctrl: ctrl}
+	mock.recorder = &MockServerMockRecorder{mock}
+	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockServer) EXPECT() *MockServerMockRecorder {
-        return m.recorder
+	return m.recorder
 }
 
 // Start mocks base method.
 func (m *MockServer) Start(ctx context.Context) error {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "Start", ctx)
-        ret0, _ := ret[0].(error)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Start", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Start indicates an expected call of Start.
 func (mr *MockServerMockRecorder) Start(ctx interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Start", reflect.TypeOf((*MockServer)(nil).Start), ctx)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Start", reflect.TypeOf((*MockServer)(nil).Start), ctx)
 }
 
 // closePostgres mocks base method.
 func (m *MockServer) closePostgres() {
-        m.ctrl.T.Helper()
-        m.ctrl.Call(m, "closePostgres")
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "closePostgres")
 }
 
 // closePostgres indicates an expected call of closePostgres.
 func (mr *MockServerMockRecorder) closePostgres() *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "closePostgres", reflect.TypeOf((*MockServer)(nil).closePostgres))
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "closePostgres", reflect.TypeOf((*MockServer)(nil).closePostgres))
 }
 
 // configureDB mocks base method.
 func (m *MockServer) configureDB(ctx context.Context) error {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "configureDB", ctx)
-        ret0, _ := ret[0].(error)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "configureDB", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // configureDB indicates an expected call of configureDB.
 func (mr *MockServerMockRecorder) configureDB(ctx interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureDB", reflect.TypeOf((*MockServer)(nil).configureDB), ctx)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureDB", reflect.TypeOf((*MockServer)(nil).configureDB), ctx)
 }
 
 // configureLogger mocks base method.
 func (m *MockServer) configureLogger() error {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "configureLogger")
-        ret0, _ := ret[0].(error)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "configureLogger")
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // configureLogger indicates an expected call of configureLogger.
 func (mr *MockServerMockRecorder) configureLogger() *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureLogger", reflect.TypeOf((*MockServer)(nil).configureLogger))
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureLogger", reflect.TypeOf((*MockServer)(nil).configureLogger))
 }
 
 // configureRouter mocks base method.
 func (m *MockServer) configureRouter() *chi.Mux {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "configureRouter")
-        ret0, _ := ret[0].(*chi.Mux)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "configureRouter")
+	ret0, _ := ret[0].(*chi.Mux)
+	return ret0
 }
 
 // configureRouter indicates an expected call of configureRouter.
 func (mr *MockServerMockRecorder) configureRouter() *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureRouter", reflect.TypeOf((*MockServer)(nil).configureRouter))
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "configureRouter", reflect.TypeOf((*MockServer)(nil).configureRouter))
 }

@@ -1,6 +1,8 @@
 package store
 
-import "github.com/nuvotlyuba/Go-yandex/internal/models"
+import (
+	"github.com/nuvotlyuba/Go-yandex/internal/models"
+)
 
 type VarRepository struct{}
 
