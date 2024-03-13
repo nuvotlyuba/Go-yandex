@@ -39,6 +39,7 @@ type Server interface {
 	configureDB(ctx context.Context) error
 	closePostgres()
 	configureRouter() *chi.Mux
+	createTables(ctx context.Context) error
 }
 
 func (s *APIServer) Start(ctx context.Context) error {
@@ -60,6 +61,12 @@ func (s *APIServer) Start(ctx context.Context) error {
 		}
 		defer s.closePostgres()
 		s.logger.Info("Successfully connected to postgreSQL pool.")
+
+		err := s.createTables(ctx)
+		if err != nil {
+			s.logger.Fatal("Unable to create tables in db.", zap.Error(err))
+		}
+		s.logger.Info("Successfully created tables.")
 	}
 
 	store := store.New(s.db)
@@ -141,6 +148,34 @@ func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
 	walkRout(s.router)
 
 	return s.router
+}
+
+func (s *APIServer) createTables(ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(ctx, `
+		CREATE TABLE IF NOT EXISTS public."shortener" (
+			"id"           varchar(40) NOT NULL,
+			"short_url"    varchar(50) NOT NULL,
+			"original_url" varchar(50) NOT NULL,
+			"created"      timestamp(0) NOT NULL,
+			CONSTRAINT "shorter.id" PRIMARY KEY ("id")
+		);
+		CREATE INDEX short_url_index ON public.shortener (short_url);
+	`)
+	if err != nil {
+		tx.Rollback(ctx)
+		return err
+	}
+
+	tx.Commit(ctx)
+
+	return nil
 }
 
 func walkRout(r *chi.Mux) {
