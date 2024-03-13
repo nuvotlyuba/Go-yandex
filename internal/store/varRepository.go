@@ -23,8 +23,6 @@ func (r *VarRepository) FindURL(shortURL string) string {
 	for _, v := range DataURL {
 		if v.ShortURL == shortURL {
 			data = v
-		} else {
-			return ""
 		}
 	}
 	return data.OriginalURL

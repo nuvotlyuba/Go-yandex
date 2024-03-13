@@ -6,15 +6,15 @@ import (
 )
 
 func (h Handler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
-	responseData, err := io.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, "Не удалось прочитать тело запроса", http.StatusBadRequest)
 		return
 	}
-	responseString := string(responseData)
+	url := string(body)
 
-	data, err := h.service.CreateNewURL(responseString)
+	data, err := h.service.CreateNewURL(url)
 	if err != nil {
 		http.Error(w, "Не удалось получить короткую ссылку", http.StatusBadRequest)
 		return
