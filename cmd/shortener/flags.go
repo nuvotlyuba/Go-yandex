@@ -33,7 +33,6 @@ func parseFlags(cfg *configs.Config) {
 		configs.ServerAddress = cfg.ServerAddress
 	}
 
-
 	//baseURL
 	if baseURL != "" {
 		configs.BaseURL = baseURL
@@ -67,7 +66,6 @@ func parseFlags(cfg *configs.Config) {
 		configs.FileStoragePath = fileStoragePath
 	}
 
-
 	//dataBaseDSN
 	if dataBaseDSN != "" {
 		configs.DataBaseDSN = dataBaseDSN
@@ -75,8 +73,5 @@ func parseFlags(cfg *configs.Config) {
 	envDataBaseDSN := os.Getenv("DATABASE_DSN")
 	if envDataBaseDSN != "" {
 		configs.DataBaseDSN = envDataBaseDSN
-	}
-	if  dataBaseDSN == "" && envDataBaseDSN == "" {
-		configs.DataBaseDSN = cfg.DataBaseDSN
 	}
 }

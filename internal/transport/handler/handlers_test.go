@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nuvotlyuba/Go-yandex/internal/service"
 	"github.com/nuvotlyuba/Go-yandex/internal/store"
 	"github.com/stretchr/testify/assert"
@@ -48,8 +49,11 @@ func TestPostUrlHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.url))
 			r.Header.Set("Content-Type", tt.contentType)
 
-			s := New(newStore)
-			s.PostURLHandler(w, r)
+			var db *pgxpool.Pool
+			store := store.New(db)
+			s := service.New(store)
+			h := New(s)
+			h.PostURLHandler(w, r)
 			res := w.Result()
 
 			assert.Equal(t, tt.want.contentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.want.contentType)
@@ -156,7 +160,11 @@ func TestPostURLJsonHandler(t *testing.T) {
 			r := httptest.NewRequest(http.MethodPost, tt.request, strings.NewReader(tt.body))
 			r.Header.Set("Content-Type", tt.contentType)
 
-			s.PostURLJsonHandler(w, r)
+			var db *pgxpool.Pool
+			store := store.New(db)
+			s := service.New(store)
+			h := New(s)
+			h.PostURLJsonHandler(w, r)
 			res := w.Result()
 
 			assert.Equal(t, tt.expectedContentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.expectedContentType)
@@ -203,12 +211,15 @@ func TestGzipCompression(t *testing.T) {
 			r := httptest.NewRequest(http.MethodPost, tt.request, buf)
 			r.Header.Set("Content-Type", tt.contentType)
 			r.Header.Set("Content-Encoding", "gzip, deflate, br")
-			cfg := store.NewConfig()
-			newStore := store.New(cfg)
-			s := New(newStore)
+
+			var db *pgxpool.Pool
+			store := store.New(db)
+			s := service.New(store)
+			h := New(s)
+
 			var res *http.Response
 			if tt.contentType == "text/plain; charset=utf-8" {
-				s.PostURLHandler(w, r)
+				h.PostURLHandler(w, r)
 				res = w.Result()
 			}
 			assert.Equal(t, tt.expectedContentType, res.Header.Get("Content-Type"), "Отличный от %s Content-Type", tt.expectedContentType)
@@ -246,9 +257,10 @@ func TestGetConnDbHandler(t *testing.T) {
 			w := httptest.NewRecorder()
 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
 
-			// store := store.New(db)
-			// s := service.New(store)
-			// h := New(s)
+			var db *pgxpool.Pool
+			store := store.New(db)
+			s := service.New(store)
+			h := New(s)
 			h.GetConnDBHandler(w, r)
 			res := w.Result()
 			res.Body.Close()

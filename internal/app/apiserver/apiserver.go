@@ -51,15 +51,16 @@ func (s *APIServer) Start(ctx context.Context) error {
 	s.router.Use(gzip.GzipMiddleware)
 	s.router.Use(middleware.Heartbeat("/ping"))
 
-	s.logger.Info("Postgres connecting ...")
-	s.logger.Info("postgres env " + s.config.DataBaseDSN)
+	if configs.DataBaseDSN != "" {
+		s.logger.Info("Postgres connecting ...")
+		s.logger.Info("postgres env " + s.config.DataBaseDSN)
 
-	if err := s.configureDB(ctx); err != nil {
-		s.logger.Fatal("Unable to create connection pool.", zap.Error(err))
+		if err := s.configureDB(ctx); err != nil {
+			s.logger.Fatal("Unable to create connection pool.", zap.Error(err))
+		}
+		defer s.closePostgres()
+		s.logger.Info("Successfully connected to postgreSQL pool.")
 	}
-	defer s.closePostgres()
-
-	s.logger.Info("Successfully connected to postgreSQL pool.")
 
 	store := store.New(s.db)
 	service := service.New(store)
