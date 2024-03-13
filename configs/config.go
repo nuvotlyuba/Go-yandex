@@ -16,7 +16,7 @@ const (
 var BaseURL = "http://localhost:8080"
 var ServerAddress = ":8080"
 var FileStoragePath = ""
-var DataBaseDSN = ""
+var DataBaseDSN = "postgres://postgres:user@localhost:5432/shortener"
 
 type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
@@ -30,7 +30,7 @@ type Config struct {
 	DBUser          string `env:"DB_USER"            envDefault:"user"`
 	DBPassword      string `env:"DB_PASSWORD"        envDefault:"password"`
 	DBHost          string `env:"DB_HOST"            envDefault:"db"`
-	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://user:user@localhost:5432/shortener"`
+	DataBaseDSN     string `env:"DATABASE_DSN"       envDefault:"postgres://postgres:user@localhost:5432/shortener"`
 }
 
 func LoadConfig() *Config {
