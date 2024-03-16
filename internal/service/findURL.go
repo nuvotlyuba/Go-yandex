@@ -34,7 +34,7 @@ func (s Service) FindURL(token string) (string, error) {
 		return data, nil
 	case "mem":
 		logger.Info("get URL from", zap.String("storage", storage))
-		data = s.varRepo.FindURL(shortURL)
+		data = s.memRepo.FindURL(shortURL)
 		return data, nil
 	}
 

@@ -138,18 +138,6 @@ func (s *APIServer) closePostgres() {
 	s.db.Close()
 }
 
-func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
-
-	s.router.Post("/", h.PostURLHandler)
-	s.router.Get("/{id}", h.GetURLHandler)
-	s.router.Post("/api/shorten", h.PostURLJsonHandler)
-	s.router.Get("/ping", h.GetConnDBHandler)
-
-	walkRout(s.router)
-
-	return s.router
-}
-
 func (s *APIServer) createTables(ctx context.Context) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -176,6 +164,19 @@ func (s *APIServer) createTables(ctx context.Context) error {
 	tx.Commit(ctx)
 
 	return nil
+}
+
+func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
+
+	s.router.Post("/", h.PostURLHandler)
+	s.router.Get("/{id}", h.GetURLHandler)
+	s.router.Post("/api/shorten", h.PostURLJsonHandler)
+	s.router.Get("/ping", h.GetConnDBHandler)
+	s.router.Post("/api/shorten/batch", h.PostURLBatchHandler)
+
+	walkRout(s.router)
+
+	return s.router
 }
 
 func walkRout(r *chi.Mux) {

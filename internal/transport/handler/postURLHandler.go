@@ -14,7 +14,7 @@ func (h Handler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	url := string(body)
 
-	data, err := h.service.CreateNewURL(url)
+	data, err := h.service.CreateURL(url)
 	if err != nil {
 		http.Error(w, "Не удалось получить короткую ссылку", http.StatusBadRequest)
 		return

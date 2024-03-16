@@ -3,44 +3,35 @@ package service
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 	"go.uber.org/zap"
 )
 
-func (s Service) CreateURL(longURL string) (*models.URL, error) {
+func (s *Service) CreateBatchURL(data models.RequestBatch) (models.BatchURL, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	token := utils.GenerateToken(8)
-
-	newURL := models.URL{
-		UUID:        uuid.New(),
-		ShortURL:    utils.GetShortURL(token),
-		OriginalURL: longURL,
-	}
-
+	convData := utils.ToURL(data)
 	storage := utils.SwitchStorage()
 	switch storage {
 	case "db":
 		logger.Info("save URL in", zap.String("storage", storage))
-		err := s.dbRepo.CreateNewURL(ctx, &newURL)
+		err := s.dbRepo.CreateBatchURL(ctx, convData)
 		if err != nil {
-			return &models.URL{}, err
+			return models.BatchURL{}, err
 		}
 	case "file":
 		logger.Info("save URL in", zap.String("storage", storage))
-		err := s.fileRepo.WriteNewURL(&newURL)
+		err := s.fileRepo.WriteBatchURL(convData)
 		if err != nil {
-			return &models.URL{}, err
+			return models.BatchURL{}, err
 		}
 	case "mem":
 		logger.Info("save URL in", zap.String("storage", storage))
-		s.memRepo.AddNewURL(&newURL)
-
+		s.memRepo.AddBatchURL(convData)
 	}
 
-	return &newURL, nil
+	return convData, nil
 }

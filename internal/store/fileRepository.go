@@ -94,6 +94,7 @@ func (s *URLScanner) ScanURL(shortenURL string) (*models.URL, error) {
 type FileRepo interface {
 	WriteNewUrl(data *models.URL) error
 	ReadURL(shortURL string) (*models.URL, error)
+	WriteBatchURL(data []*models.URL) error
 }
 
 type FileRepository struct {
@@ -101,7 +102,6 @@ type FileRepository struct {
 }
 
 func (r *FileRepository) WriteNewURL(data *models.URL) error {
-
 	w, err := NewURLRecorder(r.FileStoragePath)
 	if err != nil {
 		return err
@@ -127,4 +127,19 @@ func (r *FileRepository) ReadURL(shortenURL string) (string, error) {
 	}
 
 	return data.OriginalURL, nil
+}
+
+func (r *FileRepository) WriteBatchURL(data []*models.URL) error {
+	w, err := NewURLRecorder(r.FileStoragePath)
+	if err != nil {
+		return err
+	}
+	for _, v := range data {
+		err = w.WriteURL(v)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

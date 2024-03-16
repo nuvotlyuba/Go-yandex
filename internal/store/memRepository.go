@@ -10,14 +10,13 @@ type MemRepository struct {
 
 var DataURL []*models.URL
 
-type VarRepo interface {
-	AddNewURL(data *models.URL) error
+type MemRepo interface {
+	AddNewURL(data *models.URL)
 	FindURL(shortURL string) (*models.URL, error)
 }
 
-func (r *MemRepository) AddNewURL(data *models.URL) error {
+func (r *MemRepository) AddNewURL(data *models.URL) {
 	r.data = append(r.data, data)
-	return nil
 }
 
 func (r *MemRepository) FindURL(shortURL string) string {
@@ -28,4 +27,8 @@ func (r *MemRepository) FindURL(shortURL string) string {
 		}
 	}
 	return data.OriginalURL
+}
+
+func (r *MemRepository) AddBatchURL(data models.BatchURL) {
+	r.data = append(r.data, data...)
 }

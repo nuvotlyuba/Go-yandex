@@ -10,19 +10,20 @@ import (
 type Service struct {
 	dbRepo   *store.DBRepository
 	fileRepo *store.FileRepository
-	varRepo  *store.MemRepository
+	memRepo  *store.MemRepository
 }
 
 type Serv interface {
-	CreateNewURL(longURL string) (*models.URL, error)
+	CreateURL(longURL string) (*models.URL, error)
 	FindURL(token string) (*models.URL, error)
 	PingDB(ctx context.Context) error
+	CreateBatchURL()
 }
 
 func New(store *store.Store) *Service {
 	return &Service{
 		dbRepo:   store.DBRepo(),
 		fileRepo: store.FileRepo(),
-		varRepo:  store.MemRepo(),
+		memRepo:  store.MemRepo(),
 	}
 }

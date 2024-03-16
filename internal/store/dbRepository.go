@@ -45,3 +45,22 @@ func (r DBRepository) Ping(ctx context.Context) error {
 	}
 	return nil
 }
+
+func (r DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) error {
+	tx, err := r.store.db.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	for _, item := range data {
+		_, err := tx.Exec(ctx,
+			"INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)",
+			item.UUID, item.ShortURL, item.OriginalURL, time.Now())
+		if err != nil {
+			tx.Rollback(ctx)
+			return err
+		}
+	}
+	tx.Commit(ctx)
+
+	return nil
+}
