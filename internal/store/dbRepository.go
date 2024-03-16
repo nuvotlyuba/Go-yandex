@@ -28,7 +28,7 @@ func (r *DBRepository) CreateNewURL(ctx context.Context, data *models.URL) error
 	return nil
 }
 
-func (r DBRepository) GetURL(ctx context.Context, shortURL string) (string, error) {
+func (r *DBRepository) GetURL(ctx context.Context, shortURL string) (string, error) {
 	row := r.store.db.QueryRow(ctx, "SELECT original_url FROM shortener WHERE short_url = $1", shortURL)
 	var originalURL string
 
@@ -40,14 +40,14 @@ func (r DBRepository) GetURL(ctx context.Context, shortURL string) (string, erro
 	return originalURL, nil
 }
 
-func (r DBRepository) Ping(ctx context.Context) error {
+func (r *DBRepository) Ping(ctx context.Context) error {
 	if err := r.store.db.Ping(ctx); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) error {
+func (r *DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) error {
 	tx, err := r.store.db.Begin(ctx)
 	if err != nil {
 		return err
