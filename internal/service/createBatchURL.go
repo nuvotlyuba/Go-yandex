@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
@@ -14,6 +15,14 @@ func (s *Service) CreateBatchURL(data models.RequestBatch) (models.BatchURL, err
 	defer cancel()
 
 	convData := utils.ToURL(data)
+	fmt.Println(convData, "convData")
+	for _, v := range convData {
+		item := models.ResponseItem{
+			CorrelationID: v.ID,
+			ShortURL:      v.ShortURL,
+		}
+		fmt.Println(item, "item")
+	}
 	storage := utils.SwitchStorage()
 	switch storage {
 	case "db":

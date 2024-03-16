@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
@@ -57,6 +58,7 @@ func (r DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) er
 			item.ID, item.ShortURL, item.OriginalURL, time.Now())
 		if err != nil {
 			tx.Rollback(ctx)
+			fmt.Println(err, "err")
 			return err
 		}
 	}
