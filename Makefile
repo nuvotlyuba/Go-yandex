@@ -1,4 +1,4 @@
-build: del_app fmt_app build_app
+build: del_app fmt_app test_app build_app
 
 build_app:
 	go build -v ./cmd/shortener
