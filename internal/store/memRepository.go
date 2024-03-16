@@ -12,7 +12,8 @@ var DataURL []*models.URL
 
 type MemRepo interface {
 	AddNewURL(data *models.URL)
-	FindURL(shortURL string) (*models.URL, error)
+	FindURL(shortURL string) string
+	AddBatchURL(data models.BatchURL)
 }
 
 func (r *MemRepository) AddNewURL(data *models.URL) {
