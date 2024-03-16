@@ -1,6 +1,8 @@
 package store
 
 import (
+	"errors"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nuvotlyuba/Go-yandex/configs"
 )
@@ -17,6 +19,10 @@ func New(db *pgxpool.Pool) *Store {
 		db: db,
 	}
 }
+
+var ErrConflict = errors.New("data conflict")
+var ErrCreated = errors.New("unable to save data in db")
+var ErrQuery = errors.New("unable to exec query in db")
 
 func (s *Store) DBRepo() *DBRepository {
 	if s.dbRepository != nil {

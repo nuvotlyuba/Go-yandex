@@ -17,15 +17,29 @@ type DBRepository struct {
 	store *Store
 }
 
-func (r *DBRepository) CreateNewURL(ctx context.Context, data *models.URL) error {
+func (r *DBRepository) CreateNewURL(ctx context.Context, data *models.URL) (string, error) {
 
-	_, err := r.store.db.Exec(ctx,
-		"INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)",
+	result, err := r.store.db.Exec(ctx,
+		`INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)`,
 		data.ID, data.ShortURL, data.OriginalURL, time.Now())
-	if err != nil {
-		return err
+
+	if result.RowsAffected() == 0 {
+		row := r.store.db.QueryRow(ctx, "SELECT short_url FROM shortener WHERE original_url = $1", data.OriginalURL)
+		var shortURL string
+
+		err := row.Scan(&shortURL)
+		if err != nil {
+			return "", err
+		}
+
+		return shortURL, ErrConflict
 	}
-	return nil
+
+	if err != nil {
+		return "", ErrCreated
+	}
+
+	return "", nil
 }
 
 func (r *DBRepository) GetURL(ctx context.Context, shortURL string) (string, error) {
@@ -34,7 +48,7 @@ func (r *DBRepository) GetURL(ctx context.Context, shortURL string) (string, err
 
 	err := row.Scan(&originalURL)
 	if err != nil {
-		return "", err
+		return "", ErrQuery
 	}
 
 	return originalURL, nil
@@ -54,12 +68,13 @@ func (r *DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) e
 	}
 	for _, item := range data {
 		_, err := tx.Exec(ctx,
-			"INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)",
+			`INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)`,
 			item.ID, item.ShortURL, item.OriginalURL, time.Now())
 		if err != nil {
 			tx.Rollback(ctx)
-			return err
+			return ErrCreated
 		}
+
 	}
 	tx.Commit(ctx)
 

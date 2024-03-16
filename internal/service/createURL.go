@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
+	"github.com/nuvotlyuba/Go-yandex/internal/store"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 	"go.uber.org/zap"
 )
@@ -25,15 +27,20 @@ func (s Service) CreateURL(longURL string) (*models.URL, error) {
 	switch storage {
 	case "db":
 		logger.Info("save URL in", zap.String("storage", storage))
-		err := s.dbRepo.CreateNewURL(ctx, &newURL)
+		result, err := s.dbRepo.CreateNewURL(ctx, &newURL)
+
+		if errors.Is(err, store.ErrConflict) {
+			newURL.ShortURL = result
+			return &newURL, err
+		}
 		if err != nil {
-			return &models.URL{}, err
+			return nil, err
 		}
 	case "file":
 		logger.Info("save URL in", zap.String("storage", storage))
 		err := s.fileRepo.WriteNewURL(&newURL)
 		if err != nil {
-			return &models.URL{}, err
+			return nil, err
 		}
 	case "mem":
 		logger.Info("save URL in", zap.String("storage", storage))

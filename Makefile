@@ -30,15 +30,3 @@ clean:
 develop: docker_build docker_run_sh
 
 lint: golangci-lint run
-
-migrate_up:
-	migrate -path migrations -database "postgres://postgres:user@localhost:5432/shortener" up
-
-migrate_down:
-	migrate -path migrations -database "postgres://postgres:user@localhost:5432/shortener" down
-
-migrate_create:
-	migrate create -ext sql -dir migrations create_shortener
-
-mockgen:
-	mockgen -destination=mocks/mock_store.go -package=mocks project/apiserver Server

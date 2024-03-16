@@ -3,6 +3,8 @@ package handler
 import (
 	"io"
 	"net/http"
+
+	"github.com/nuvotlyuba/Go-yandex/internal/store"
 )
 
 func (h Handler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
@@ -15,6 +17,13 @@ func (h Handler) PostURLHandler(w http.ResponseWriter, r *http.Request) {
 	url := string(body)
 
 	data, err := h.service.CreateURL(url)
+
+	if err == store.ErrConflict {
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusConflict)
+		io.WriteString(w, data.ShortURL)
+		return
+	}
 	if err != nil {
 		http.Error(w, "Не удалось получить короткую ссылку", http.StatusBadRequest)
 		return
