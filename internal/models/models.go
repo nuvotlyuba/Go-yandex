@@ -21,8 +21,8 @@ type RequestBatch []RequestItem
 type ResponseBatch []ResponseItem
 
 type RequestItem struct {
-	CorrelationID string `json:"correlation_id"`
-	OriginalURL   string `json:"original_url"`
+	CorrelationID uuid.UUID `json:"correlation_id"`
+	OriginalURL   string    `json:"original_url"`
 }
 type ResponseItem struct {
 	CorrelationID string `json:correlation_id`

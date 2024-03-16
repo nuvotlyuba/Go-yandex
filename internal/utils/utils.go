@@ -5,7 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
@@ -46,7 +45,7 @@ func ToURL(data models.RequestBatch) []*models.URL {
 		token := GenerateToken(8)
 
 		tmp := &models.URL{
-			UUID:        uuid.New(),
+			UUID:        item.CorrelationID,
 			ShortURL:    GetShortURL(token),
 			OriginalURL: item.OriginalURL,
 		}
