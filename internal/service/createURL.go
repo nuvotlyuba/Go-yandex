@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
@@ -14,10 +13,10 @@ func (s Service) CreateURL(longURL string) (*models.URL, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	token := utils.GenerateToken(8)
+	token := utils.GenerateToken()
 
 	newURL := models.URL{
-		UUID:        uuid.New(),
+		ID:          utils.GenerateToken(),
 		ShortURL:    utils.GetShortURL(token),
 		OriginalURL: longURL,
 	}

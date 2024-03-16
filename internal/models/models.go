@@ -1,13 +1,11 @@
 package models
 
-import "github.com/google/uuid"
-
 type BatchURL []*URL
 
 type URL struct {
-	UUID        uuid.UUID `json:"uuid"`
-	ShortURL    string    `json:"short_url"`
-	OriginalURL string    `json:"original_url"`
+	ID          string `json:"uuid"`
+	ShortURL    string `json:"short_url"`
+	OriginalURL string `json:"original_url"`
 }
 
 type RequestBody struct {
@@ -21,8 +19,8 @@ type RequestBatch []RequestItem
 type ResponseBatch []ResponseItem
 
 type RequestItem struct {
-	CorrelationID uuid.UUID `json:"correlation_id"`
-	OriginalURL   string    `json:"original_url"`
+	CorrelationID string `json:"correlation_id"`
+	OriginalURL   string `json:"original_url"`
 }
 type ResponseItem struct {
 	CorrelationID string `json:correlation_id`

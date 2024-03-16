@@ -20,7 +20,7 @@ func (r *DBRepository) CreateNewURL(ctx context.Context, data *models.URL) error
 
 	_, err := r.store.db.Exec(ctx,
 		"INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)",
-		data.UUID, data.ShortURL, data.OriginalURL, time.Now())
+		data.ID, data.ShortURL, data.OriginalURL, time.Now())
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func (r DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) er
 	for _, item := range data {
 		_, err := tx.Exec(ctx,
 			"INSERT INTO shortener (id, short_url, original_url, created) VALUES ($1, $2, $3, $4)",
-			item.UUID, item.ShortURL, item.OriginalURL, time.Now())
+			item.ID, item.ShortURL, item.OriginalURL, time.Now())
 		if err != nil {
 			tx.Rollback(ctx)
 			return err
