@@ -85,13 +85,12 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 // 	store := store.New(db)
 // 	s := service.New(store)
 // 	h := New(s)
-// 	data, _ := s.CreateNewURL(url)
-// 	fmt.Println( strings.Join(strings.Split(data.ShortURL, "/"), ""), "data")
+// 	data, _ := s.CreateURL(url)
 // 	successRequest := "/" + strings.Join(strings.Split(data.ShortURL, "/"), "")
+// 	fmt.Println(successRequest, "successRequest")
 
 // 	type want struct {
 // 		statusCode     int
-// 		locationHeader string
 // 	}
 
 // 	tests := []struct {
@@ -106,7 +105,6 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 // 			request:  successRequest,
 // 			want: want{
 // 				statusCode:     200,
-// 				locationHeader: url,
 // 			},
 // 		},
 // 		{
@@ -122,10 +120,11 @@ func testRequest(t *testing.T, ts *httptest.Server, method, path string) *http.R
 // 		t.Run(tt.name, func(t *testing.T) {
 // 			w := httptest.NewRecorder()
 // 			r := httptest.NewRequest(http.MethodPost, tt.request, nil)
-// 			r.Header.Set("Content-Type", tt.contentType)
+// 			// r.Header.Set("Content-Type", tt.contentType)
 
 // 			h.GetURLHandler(w, r)
 // 			res := w.Result()
+// 			fmt.Println(res.StatusCode, "statusCode")
 
 // 			assert.Equal(t, tt.want.statusCode, res.StatusCode, "Отличный от %d статус код", tt.want.statusCode)
 

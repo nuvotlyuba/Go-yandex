@@ -4,6 +4,7 @@ package store
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
@@ -104,11 +105,11 @@ type FileRepository struct {
 func (r *FileRepository) WriteNewURL(data *models.URL) error {
 	w, err := NewURLRecorder(r.FileStoragePath)
 	if err != nil {
-		return err
+		return fmt.Errorf("error in FileRepository: WriteNewURL -> %v", err)
 	}
 	err = w.WriteURL(data)
 	if err != nil {
-		return err
+		return fmt.Errorf("error in FileRepository: WriteNewURL -> %v", err)
 	}
 
 	return nil
@@ -118,12 +119,12 @@ func (r *FileRepository) WriteNewURL(data *models.URL) error {
 func (r *FileRepository) ReadURL(shortenURL string) (string, error) {
 	rr, err := NewURLScanner(r.FileStoragePath)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error in FileRepository: ReadURL -> %v", err)
 	}
 	rr.Split()
 	data, err := rr.ScanURL(shortenURL)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error in FileRepository: ReadURL -> %v", err)
 	}
 
 	return data.OriginalURL, nil
@@ -137,7 +138,7 @@ func (r *FileRepository) WriteBatchURL(data []*models.URL) error {
 	for _, v := range data {
 		err = w.WriteURL(v)
 		if err != nil {
-			return err
+			return fmt.Errorf("error in FileRepository: WriteBatchURL -> %v", err)
 		}
 	}
 

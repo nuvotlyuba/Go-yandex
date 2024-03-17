@@ -44,7 +44,7 @@ type Server interface {
 
 func (s *APIServer) Start(ctx context.Context) error {
 	if err := s.configureLogger(); err != nil {
-		s.logger.Fatal("Don't initialize logger")
+		s.logger.Fatal("Don't initialize logger", zap.Error(err))
 	}
 	s.logger.Info("Server running ...", zap.String("address", s.config.ServerAddress))
 
@@ -84,7 +84,7 @@ func (s *APIServer) Start(ctx context.Context) error {
 
 	err := server.ListenAndServe()
 	if err != nil {
-		return err
+		logger.Fatal("Unable to server start", zap.Error(err))
 	}
 
 	return nil
@@ -94,7 +94,7 @@ func (s *APIServer) configureLogger() error {
 
 	lvl, err := zap.ParseAtomicLevel(s.config.LogLevel)
 	if err != nil {
-		return err
+		return fmt.Errorf("logger: parseAtomicLevel  %v", err)
 	}
 	var cfg zap.Config
 	if configs.Stage(s.config.AppEnv) == configs.Production {
@@ -162,7 +162,10 @@ func (s *APIServer) createTables(ctx context.Context) error {
 		return err
 	}
 
-	tx.Commit(ctx)
+	err = tx.Commit(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

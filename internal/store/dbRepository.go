@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
@@ -29,14 +30,14 @@ func (r *DBRepository) CreateNewURL(ctx context.Context, data *models.URL) (stri
 
 		err := row.Scan(&shortURL)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("error in dbRepository: CreateNewURL -> %v", err)
 		}
 
 		return shortURL, ErrConflict
 	}
 
 	if err != nil {
-		return "", ErrCreated
+		return "", fmt.Errorf("error in dbRepository: CreateNewURL -> %v", ErrCreated)
 	}
 
 	return "", nil
@@ -48,7 +49,7 @@ func (r *DBRepository) GetURL(ctx context.Context, shortURL string) (string, err
 
 	err := row.Scan(&originalURL)
 	if err != nil {
-		return "", ErrQuery
+		return "", fmt.Errorf("error in dbRepository: GetURL -> %v", ErrQuery)
 	}
 
 	return originalURL, nil
@@ -56,7 +57,7 @@ func (r *DBRepository) GetURL(ctx context.Context, shortURL string) (string, err
 
 func (r *DBRepository) Ping(ctx context.Context) error {
 	if err := r.store.db.Ping(ctx); err != nil {
-		return err
+		return fmt.Errorf("error in dbRepository: Ping -> %v", err)
 	}
 	return nil
 }
@@ -64,7 +65,7 @@ func (r *DBRepository) Ping(ctx context.Context) error {
 func (r *DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) error {
 	tx, err := r.store.db.Begin(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("error in dbRepository: CreateBatchURL begin transaction -> %v", err)
 	}
 	for _, item := range data {
 		_, err := tx.Exec(ctx,
@@ -76,7 +77,10 @@ func (r *DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) e
 		}
 
 	}
-	tx.Commit(ctx)
+	err = tx.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("error in dbRepository: CreateBatchURL commit -> %v", err)
+	}
 
 	return nil
 }

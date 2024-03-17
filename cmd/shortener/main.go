@@ -16,8 +16,7 @@ func main() {
 	parseFlags(config)
 
 	//конфигурируем сервер
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := context.Background()
 
 	cfg := apiserver.NewConfig(config)
 	logger.Info(cfg.DataBaseDSN, "cfg.DataBaseDSN")
