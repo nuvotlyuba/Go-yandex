@@ -18,22 +18,20 @@ func (s Service) FindURL(token string) (string, error) {
 	var err error
 
 	storage := utils.SwitchStorage()
+	logger.Info("get URL from", zap.String("storage", storage))
 	switch storage {
 	case "db":
-		logger.Info("get URL from", zap.String("storage", storage))
 		data, err = s.dbRepo.GetURL(ctx, shortURL)
 		if err != nil {
 			return data, err
 		}
 	case "file":
-		logger.Info("get URL from", zap.String("storage", storage))
 		data, err = s.fileRepo.ReadURL(shortURL)
 		if err != nil {
 			return data, err
 		}
 		return data, nil
 	case "mem":
-		logger.Info("get URL from", zap.String("storage", storage))
 		data = s.memRepo.FindURL(shortURL)
 		return data, nil
 	}

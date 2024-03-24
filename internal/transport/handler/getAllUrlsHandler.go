@@ -5,24 +5,23 @@ import (
 	"net/http"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
-	"github.com/nuvotlyuba/Go-yandex/internal/models"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 	"go.uber.org/zap"
 )
 
-func (h *Handler) PostURLBatchHandler(w http.ResponseWriter, r *http.Request) {
-	req := make([]models.RequestItem, 0)
+func (h Handler) GetAllUrlsHandler(w http.ResponseWriter, r *http.Request) {
+	data, err := h.service.GetAllUrs()
 
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		logger.Debug("cannot decode request JSON body", zap.Error(err))
-		w.WriteHeader(http.StatusInternalServerError)
+	if err != nil {
+		http.Error(w, error.Error(err), http.StatusBadRequest)
 		return
 	}
 
-	data, err := h.service.CreateBatchURL(req)
-	if err != nil {
-		http.Error(w, error.Error(err), http.StatusBadRequest)
+	if data == nil {
+		http.Error(w, error.Error(err), http.StatusNoContent)
+		return
 	}
+
 
 	result := utils.ToResult(data)
 

@@ -51,3 +51,15 @@ func ToURL(data models.RequestBatch) []*models.URL {
 	}
 	return result
 }
+
+func ToResult(data []*models.URL) models.ResponseBatch {
+	result := make([]models.ResponseItem, 0)
+	for _, v := range data {
+		item := models.ResponseItem{
+			CorrelationID: v.ID,
+			ShortURL:      v.ShortURL,
+		}
+		result = append(result, item)
+	}
+	return result
+}
