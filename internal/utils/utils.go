@@ -1,19 +1,20 @@
 package utils
 
 import (
-	"math/rand"
+	"crypto/rand"
+	"encoding/hex"
+	"os"
 	"strings"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
-func GenerateToken(length int) string {
-	letterBytes := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
-	}
-	return string(b)
+func GenerateToken() string {
+	b := make([]byte, 4) //equals 8 characters
+	rand.Read(b)
+	s := hex.EncodeToString(b)
+	return s
 }
 
 func GetShortURL(id string) string {
@@ -23,6 +24,30 @@ func GetShortURL(id string) string {
 func GetDirsFromPath(path string) string {
 	sl := strings.Split(path, "/")
 	sl = sl[:len(sl)-1]
-    st := strings.Join(sl, "/")
+	st := strings.Join(sl, "/")
 	return st
+}
+
+func SwitchStorage() string {
+	if configs.DataBaseDSN != "" || os.Getenv("DATABASE_DSN") != "" {
+		return "db"
+	}
+	if configs.FileStoragePath != "" || os.Getenv("FILE_STORAGE_PATH") != "" {
+		return "file"
+	}
+	return "mem"
+}
+
+func ToURL(data models.RequestBatch) []*models.URL {
+	var result []*models.URL
+	for _, item := range data {
+
+		tmp := &models.URL{
+			ID:          item.CorrelationID,
+			ShortURL:    GetShortURL(item.CorrelationID),
+			OriginalURL: item.OriginalURL,
+		}
+		result = append(result, tmp)
+	}
+	return result
 }

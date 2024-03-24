@@ -6,13 +6,13 @@ import (
 )
 
 type compressWriter struct {
-	w http.ResponseWriter
+	w  http.ResponseWriter
 	zw *gzip.Writer
 }
 
 func newCompressWriter(w http.ResponseWriter) *compressWriter {
 	return &compressWriter{
-		w: w,
+		w:  w,
 		zw: gzip.NewWriter(w),
 	}
 }
