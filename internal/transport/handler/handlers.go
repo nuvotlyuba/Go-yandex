@@ -22,5 +22,5 @@ type Handlers interface {
 	PostURLJsonHandler(w http.ResponseWriter, r *http.Request)
 	GetConnDBHandler(w http.ResponseWriter, r *http.Request)
 	PostURLBatchHandler(w http.ResponseWriter, r *http.Request)
-	GetAllUrlsHandler(w http.ResponseWriter, r *http.Request)
+	GetAllURLsHandler(w http.ResponseWriter, r *http.Request)
 }

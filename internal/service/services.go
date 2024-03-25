@@ -18,6 +18,7 @@ type Serv interface {
 	FindURL(token string) (*models.URL, error)
 	PingDB(ctx context.Context) error
 	CreateBatchURL()
+	GetAllURLs() ([]*models.URL, error)
 }
 
 func New(store *store.Store) *Service {

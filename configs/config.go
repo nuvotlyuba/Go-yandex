@@ -24,7 +24,7 @@ type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
 	BaseURL         string `env:"BASE_URL"           envDefault:"http://localhost:8080"`
 	ServerAddress   string `env:"SERVER_ADDRESS"     envDefault:":8080"`
-	FileStoragePath string `env:"FILE_STORAGE_PATH"  envDefault:"/tmp/short-url-db.json"`
+	FileStoragePath string `env:"FILE_STORAGE_PATH"  envDefault:"tmp/short-url-db.json"`
 	LogLevel        string `env:"LOG_LEVEL"          envDefault:"debug"`
 	WriteTimeout    int    `env:"WRITE_TIMEOUT"      envDefault:"10"`
 	ReadTimeout     int    `env:"READ_TIMEOUT"       envDefault:"10"`

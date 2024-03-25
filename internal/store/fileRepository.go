@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
@@ -92,6 +93,26 @@ func (s *URLScanner) ScanURL(shortenURL string) (*models.URL, error) {
 
 }
 
+func (s *URLScanner) ScanAllURLs() ([]models.URL, error) {
+	urls := make([]models.URL, 0)
+	var url models.URL
+
+	for s.scanner.Scan() {
+		data := s.scanner.Bytes()
+		err := json.Unmarshal(data, &url)
+		if err != nil {
+			return nil, err
+		}
+		urls = append(urls, url)
+	}
+
+	if err := s.scanner.Err(); err != nil {
+		return nil, err
+	}
+	return urls, nil
+
+}
+
 type FileRepo interface {
 	WriteNewUrl(data *models.URL) error
 	ReadURL(shortURL string) (*models.URL, error)
@@ -143,4 +164,19 @@ func (r *FileRepository) WriteBatchURL(data []*models.URL) error {
 	}
 
 	return nil
+}
+
+func (r *FileRepository) ReadAllURLs() (*[]models.URL, error) {
+	rr, err := NewURLScanner(r.FileStoragePath)
+	if err != nil {
+		logger.Debug("error in FileRepository: ReadAllURLs.NewURLScanner ->", err)
+		return nil, ErrNoContent
+	}
+	rr.Split()
+	data, err := rr.ScanAllURLs()
+	if err != nil {
+		return nil, fmt.Errorf("error in FileRepository: ReadAllURLs.ScanAllURLs -> %v", err)
+	}
+
+	return &data, nil
 }

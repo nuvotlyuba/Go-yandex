@@ -33,3 +33,15 @@ func (r *MemRepository) FindURL(shortURL string) string {
 func (r *MemRepository) AddBatchURL(data models.BatchURL) {
 	r.data = append(r.data, data...)
 }
+
+func (r *MemRepository) GetAllURLs() (*[]models.URL, error) {
+	var res []models.URL
+	for _, v := range r.data {
+		res = append(res, *v)
+	}
+	if len(res) == 0 {
+		return nil, ErrNoContent
+	}
+
+	return &res, nil
+}

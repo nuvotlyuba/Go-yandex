@@ -84,3 +84,24 @@ func (r *DBRepository) CreateBatchURL(ctx context.Context, data []*models.URL) e
 
 	return nil
 }
+
+func (r *DBRepository) GetAllURLs(ctx context.Context) (*[]models.URL, error) {
+	rows, err := r.store.db.Query(ctx, "SELECT original_url, short_url FROM shortener")
+	if err != nil {
+		return nil, fmt.Errorf("err in dbRepository: GetAllURLs.Query -> %v", err)
+	}
+	urls := make([]models.URL, 0)
+	for rows.Next() {
+		url := models.URL{}
+		err := rows.Scan(&url.OriginalURL, &url.ShortURL)
+		if err != nil {
+			return nil, fmt.Errorf("error in dbRepository: GetURL -> %v", ErrQuery)
+		}
+		urls = append(urls, url)
+	}
+	if len(urls) == 0 {
+		return nil, ErrNoContent
+	}
+
+	return &urls, nil
+}
