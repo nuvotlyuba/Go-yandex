@@ -2,6 +2,7 @@ package configs
 
 import (
 	"log"
+	"time"
 
 	"github.com/caarlos0/env/v10"
 )
@@ -13,10 +14,14 @@ const (
 	Production  Stage = "production"
 )
 
+const TokenExp = time.Hour * 3
+const SecretKey = "supersecretkey"
+
 var BaseURL string
 var ServerAddress string
 var FileStoragePath string
 var DataBaseDSN string
+var UserID int
 
 // var DataBaseDSN = "postgres://postgres:postgres@postgres:5432/praktikum"
 
