@@ -3,6 +3,7 @@ package jwt
 import (
 	"crypto/rand"
 	"encoding/binary"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -18,6 +19,7 @@ type Claims struct {
 func BuildJWTString() (string, error) {
 
 	userID, err := generateUserID()
+	logger.Debug(fmt.Sprintf("generated userID -> %v", userID))
 	if err != nil {
 		return "", err
 	}
@@ -27,6 +29,7 @@ func BuildJWTString() (string, error) {
 		},
 		UserID: userID,
 	})
+	logger.Debug(fmt.Sprintf("token before signed -> %v", token))
 	tokenString, err := token.SignedString([]byte(configs.SecretKey))
 	if err != nil {
 		return "", err
