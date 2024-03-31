@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/service"
@@ -24,3 +25,5 @@ type Handlers interface {
 	PostURLBatchHandler(w http.ResponseWriter, r *http.Request)
 	GetAllURLsHandler(w http.ResponseWriter, r *http.Request)
 }
+
+var ErrNoCookie = errors.New("http: named cookie not present")

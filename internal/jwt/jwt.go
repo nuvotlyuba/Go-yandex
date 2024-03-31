@@ -65,6 +65,7 @@ func generateUserID() (int, error) {
 	}
 
 	data := int(binary.BigEndian.Uint32(b))
+	configs.UserID = data
 
 	return data, nil
 }

@@ -7,6 +7,7 @@ import (
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
 	"github.com/nuvotlyuba/Go-yandex/internal/jwt"
+	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/store"
@@ -14,20 +15,42 @@ import (
 )
 
 func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
-	token, err := r.Cookie("token")
-	if err != nil {
-		http.Error(w, error.Error(err), http.StatusBadRequest)
-		return
-	}
-
 	status := http.StatusOK
-	userID := jwt.GetUserID(token.Value)
-	if userID != configs.UserID {
-		// http.SetCookie(w, cookie)
+	token, err := r.Cookie("token")
+	// если куки нет, то создаем ее
+	if errors.Is(err, http.ErrNoCookie) {
+
+		cookie, err := utils.PrepareCookie()
+		if err != nil {
+			http.Error(w, error.Error(err), http.StatusBadRequest)
+			return
+		}
+		http.SetCookie(w, cookie)
 		status = http.StatusUnauthorized
-	}
-	if errors.Is(err, store.ErrNoContent) {
-		status = http.StatusNoContent
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(status)
+		return
+	} else {
+		// если кука есть, то проводим проверку
+		userID := jwt.GetUserID(token.Value)
+		if userID != configs.UserID {
+			// если кука есть, но она не проходит проверку подлинности
+			cookie, err := utils.PrepareCookie()
+			if err != nil {
+				http.Error(w, error.Error(err), http.StatusBadRequest)
+				return
+			}
+			http.SetCookie(w, cookie)
+			status = http.StatusUnauthorized
+
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(status)
+			return
+		}
+		// если нет созданных коротких ссылок
+		if errors.Is(err, store.ErrNoContent) {
+			status = http.StatusNoContent
+		}
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -47,3 +70,7 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+// ErrNoCookie is returned by Request's Cookie method when a cookie is not found.
+// var ErrNoCookie = errors.New("http: named cookie not present")
+// http.ErrNoCookie
