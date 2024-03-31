@@ -147,7 +147,6 @@ func (s *APIServer) createTables(ctx context.Context) error {
 		return err
 	}
 	_, err = tx.Exec(ctx, `
-		TRUNCATE TABLE public."shortener";
 		CREATE TABLE IF NOT EXISTS public."shortener" (
 			"id"           varchar(100) NOT NULL,
 			"short_url"    varchar(100) NOT NULL,
