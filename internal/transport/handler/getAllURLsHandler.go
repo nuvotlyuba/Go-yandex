@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
@@ -27,7 +28,7 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.SetCookie(w, cookie)
-		logger.Debug("set cookie", cookie)
+		logger.Debug(fmt.Sprintf("cookie %v", cookie))
 		status = http.StatusUnauthorized
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(status)
