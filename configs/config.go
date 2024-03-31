@@ -2,6 +2,7 @@ package configs
 
 import (
 	"log"
+	"time"
 
 	"github.com/caarlos0/env/v10"
 )
@@ -13,10 +14,14 @@ const (
 	Production  Stage = "production"
 )
 
+const TokenExp = time.Hour * 3
+const SecretKey = "supersecretkey"
+
 var BaseURL string
 var ServerAddress string
 var FileStoragePath string
 var DataBaseDSN string
+var UserID int
 
 // var DataBaseDSN = "postgres://postgres:postgres@postgres:5432/praktikum"
 
@@ -24,7 +29,7 @@ type Config struct {
 	AppEnv          string `env:"APP_ENV"            envDefault:"development"`
 	BaseURL         string `env:"BASE_URL"           envDefault:"http://localhost:8080"`
 	ServerAddress   string `env:"SERVER_ADDRESS"     envDefault:":8080"`
-	FileStoragePath string `env:"FILE_STORAGE_PATH"  envDefault:"/tmp/short-url-db.json"`
+	FileStoragePath string `env:"FILE_STORAGE_PATH"  envDefault:"tmp/short-url-db.json"`
 	LogLevel        string `env:"LOG_LEVEL"          envDefault:"debug"`
 	WriteTimeout    int    `env:"WRITE_TIMEOUT"      envDefault:"10"`
 	ReadTimeout     int    `env:"READ_TIMEOUT"       envDefault:"10"`

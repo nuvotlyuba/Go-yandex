@@ -23,6 +23,7 @@ func New(db *pgxpool.Pool) *Store {
 var ErrConflict = errors.New("data conflict")
 var ErrCreated = errors.New("unable to save data in db")
 var ErrQuery = errors.New("unable to exec query in db")
+var ErrNoContent = errors.New("no content")
 
 func (s *Store) DBRepo() *DBRepository {
 	if s.dbRepository != nil {

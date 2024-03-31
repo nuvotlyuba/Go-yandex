@@ -177,6 +177,7 @@ func (s *APIServer) configureRouter(h *handler.Handler) *chi.Mux {
 	s.router.Post("/api/shorten", h.PostURLJsonHandler)
 	s.router.Get("/ping", h.GetConnDBHandler)
 	s.router.Post("/api/shorten/batch", h.PostURLBatchHandler)
+	s.router.Get("/api/user/urls", h.GetAllURLsHandler)
 
 	walkRout(s.router)
 

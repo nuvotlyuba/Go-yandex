@@ -6,6 +6,7 @@ import (
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
+	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 	"go.uber.org/zap"
 )
 
@@ -23,14 +24,7 @@ func (h *Handler) PostURLBatchHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, error.Error(err), http.StatusBadRequest)
 	}
 
-	result := make([]models.ResponseItem, 0)
-	for _, v := range data {
-		item := models.ResponseItem{
-			CorrelationID: v.ID,
-			ShortURL:      v.ShortURL,
-		}
-		result = append(result, item)
-	}
+	result := utils.ToResult(data)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

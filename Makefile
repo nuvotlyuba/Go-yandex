@@ -12,8 +12,14 @@ test_app:
 start:
 	go run ./cmd/shortener
 
-flags:
-	go run ./cmd/shortener -a :3333 -b http://localhost:3333
+file:
+	./shortener -f="tmp/tmp/short.json"
+
+db:
+	./shortener -d="postgres://postgres:user@localhost:5432/shortener"
+
+meme:
+	./shortener
 
 fmt_app:
 	go fmt ./...

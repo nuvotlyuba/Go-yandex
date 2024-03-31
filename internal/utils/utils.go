@@ -3,10 +3,13 @@ package utils
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
+	"net/http"
 	"os"
 	"strings"
 
 	"github.com/nuvotlyuba/Go-yandex/configs"
+	"github.com/nuvotlyuba/Go-yandex/internal/jwt"
 	"github.com/nuvotlyuba/Go-yandex/internal/models"
 )
 
@@ -50,4 +53,28 @@ func ToURL(data models.RequestBatch) []*models.URL {
 		result = append(result, tmp)
 	}
 	return result
+}
+
+func ToResult(data []*models.URL) models.ResponseBatch {
+	result := make([]models.ResponseItem, 0)
+	for _, v := range data {
+		item := models.ResponseItem{
+			CorrelationID: v.ID,
+			ShortURL:      v.ShortURL,
+		}
+		result = append(result, item)
+	}
+	return result
+}
+
+func PrepareCookie() (*http.Cookie, error) {
+	token, err := jwt.BuildJWTString()
+	if err != nil {
+		return nil, fmt.Errorf("BuildJWTString err -> %v", err)
+	}
+	cookie := &http.Cookie{
+		Name:  "token",
+		Value: token,
+	}
+	return cookie, nil
 }

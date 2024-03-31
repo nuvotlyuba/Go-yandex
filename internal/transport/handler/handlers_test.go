@@ -237,5 +237,3 @@ func TestGzipCompression(t *testing.T) {
 		})
 	}
 }
-
-

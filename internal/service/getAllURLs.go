@@ -4,38 +4,37 @@ import (
 	"context"
 
 	"github.com/nuvotlyuba/Go-yandex/internal/app/apiserver/logger"
+	"github.com/nuvotlyuba/Go-yandex/internal/models"
 	"github.com/nuvotlyuba/Go-yandex/internal/utils"
 	"go.uber.org/zap"
 )
 
-func (s Service) FindURL(token string) (string, error) {
+func (s Service) GetAllURLs() (*[]models.URL, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	shortURL := utils.GetShortURL(token)
-
-	var data string
+	var data *[]models.URL
 	var err error
 
 	storage := utils.SwitchStorage()
-	logger.Info("get URL from", zap.String("storage", storage))
+	logger.Info("get all URLs from", zap.String("storage", storage))
 	switch storage {
 	case "db":
-		data, err = s.dbRepo.GetURL(ctx, shortURL)
+		data, err = s.dbRepo.GetAllURLs(ctx)
 		if err != nil {
-			return data, err
+			return nil, err
 		}
 	case "file":
-		data, err = s.fileRepo.ReadURL(shortURL)
+		data, err = s.fileRepo.ReadAllURLs()
 		if err != nil {
-			return data, err
+			return nil, err
 		}
-		return data, nil
 	case "mem":
-		data = s.memRepo.FindURL(shortURL)
-		return data, nil
+		data, err = s.memRepo.GetAllURLs()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return data, nil
-
 }
