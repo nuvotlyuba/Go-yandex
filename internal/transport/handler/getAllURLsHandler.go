@@ -19,6 +19,7 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 	token, err := r.Cookie("token")
 	// если куки нет, то создаем ее
 	if errors.Is(err, http.ErrNoCookie) {
+		logger.Debug("no cookie")
 
 		cookie, err := utils.PrepareCookie()
 		if err != nil {
@@ -31,9 +32,11 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
 		return
 	} else {
+		logger.Debug("yes cookie")
 		// если кука есть, то проводим проверку
 		userID := jwt.GetUserID(token.Value)
 		if userID != configs.UserID {
+			logger.Debug("no valid cookie")
 			// если кука есть, но она не проходит проверку подлинности
 			cookie, err := utils.PrepareCookie()
 			if err != nil {
@@ -49,6 +52,7 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		// если нет созданных коротких ссылок
 		if errors.Is(err, store.ErrNoContent) {
+			logger.Debug("no content")
 			status = http.StatusNoContent
 		}
 	}
