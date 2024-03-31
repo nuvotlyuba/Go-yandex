@@ -34,6 +34,7 @@ func BuildJWTString() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	logger.Debug(fmt.Sprintf("token -> %v", tokenString))
 
 	return tokenString, nil
 }
