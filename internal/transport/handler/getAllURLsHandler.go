@@ -27,6 +27,7 @@ func (h Handler) GetAllURLsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.SetCookie(w, cookie)
+		logger.Debug("set cookie", cookie)
 		status = http.StatusUnauthorized
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(status)
